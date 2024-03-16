@@ -16,8 +16,9 @@ class Program
         const int ALL_LINE_COST = 9;
         int totalAmountDeposited=0;
         int totalAmountWon=0;
-        int amountWon;
+        int amountWon = 0;
         int amountDeposited;
+
         Console.WriteLine("*********************************|Welcome to Slot Machine|*********************************\n");
         Console.WriteLine($"Option 1: - Pay ${SINGLE_LINE_COST} to play for all rows and win $2 for each line that matches");
         Console.WriteLine($"Option 2: - Pay ${SINGLE_LINE_COST} to play for all columns and win $2 for each line that matches");
@@ -31,28 +32,30 @@ class Program
 
         if (cashDepositSelection == 1 || cashDepositSelection==2)
         {
-            Console.WriteLine($"\nAmount deposited = ${SINGLE_LINE_COST}\n");
-            totalAmountDeposited += SINGLE_LINE_COST;
+            amountDeposited = SINGLE_LINE_COST;
+            Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
+            totalAmountDeposited += amountDeposited;
             Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
             Console.WriteLine("\n");
         }
 
         if (cashDepositSelection == 3 || cashDepositSelection == 4)
         {
-            Console.WriteLine($"\nAmount deposited = ${DOUBLE_LINE_COST}\n");
-            totalAmountDeposited += DOUBLE_LINE_COST;
+            amountDeposited = DOUBLE_LINE_COST;
+            Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
+            totalAmountDeposited += amountDeposited;
             Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
             Console.WriteLine("\n");
         }
 
         if (cashDepositSelection == 5)
         {
-            Console.WriteLine($"\nAmount deposited = ${ALL_LINE_COST}\n");
-            totalAmountDeposited += ALL_LINE_COST;
+            amountDeposited = ALL_LINE_COST;
+            Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
+            totalAmountDeposited += amountDeposited;
             Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
             Console.WriteLine("\n");
         }
-
 
         List<char> listOfChars = new List<char>(){'a','b','c',};
         char[,] slotMachine = new char[3,3];
@@ -64,15 +67,12 @@ class Program
                 Random rng = new Random();
                 int randomIndex = rng.Next(0, listOfChars.Count);
                 slotMachine[i, j] = listOfChars[randomIndex];
-               
                 //Console.WriteLine($"Element at position ({i},{j}): {slotMachine[i, j]}");
-
                 Console.Write(slotMachine[i, j] + " ");
             }
             Console.WriteLine();
         }
 
-        
         Console.WriteLine("Press ENTER to see amount won...");
         Console.WriteLine("\n");
         Console.ReadKey();
@@ -95,9 +95,9 @@ class Program
 
                 if (allSame)
                 {
+                    amountWon += WIN_AMOUNT;
                     for (int j = 0; j < 3; j++)
                     {
-                        totalAmountWon += WIN_AMOUNT;
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write(slotMachine[i, j] + " ");
                         Console.ResetColor();
@@ -113,66 +113,52 @@ class Program
                     Console.WriteLine();
                 }
             }
+            Console.WriteLine("you won $" + amountWon);
+            totalAmountWon += amountWon;
             Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         if (cashDepositSelection == 2)
+        {
+            for (int j = 0; j < 3; j++)
             {
-                for (int j = 0; j < 3; j++)
-                {
-                    char firstColumnElement = slotMachine[0, j];
-                    bool allSame = true;
+                char firstColumnElement = slotMachine[0, j];
+                bool allSame = true;
 
-                    for (int i = 1; i < 3; i++)
+                for (int i = 1; i < 3; i++)
+                {
+                    if (!firstColumnElement.Equals(slotMachine[i, j]))
                     {
-                        if (!firstColumnElement.Equals(slotMachine[i, j]))
-                        {
                             allSame = false;
                             break;
-                        }
-                    }
-
-                    if (allSame)
-                    {
-                        Console.WriteLine($"All elements in column {j} are the same: {firstColumnElement}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Column {j} has different elements.");
                     }
                 }
 
+                if (allSame)
+                {
+                    amountWon += WIN_AMOUNT;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(slotMachine[i, j] + " ");
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine();
+                }
+                else
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Console.Write(slotMachine[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
             }
+            Console.WriteLine("you won $" + amountWon);
+            totalAmountWon += amountWon;
+            Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+        }
 
             if (cashDepositSelection == 3)
             {
