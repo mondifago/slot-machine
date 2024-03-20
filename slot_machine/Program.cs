@@ -16,10 +16,8 @@ class Program
         const int ALL_LINE_COST = 9;
         int totalAmountDeposited=0;
         int totalAmountWon=0;
-       
         int amountDeposited;
         
-
         while (true)
         {
             int amountWon = 0;
@@ -238,13 +236,12 @@ class Program
                 bool column3Same = upRight == rightMiddle && rightMiddle == downRight;
                 bool diagonal1Same = upLeft == center && downRight == center;
                 bool diagonal2Same = upRight == center && downLeft == center;
-                // Print the grid
+                
                 for (int i = 0; i < 3; i++)
                 {
                     for (int j = 0; j < 3; j++)
                     {
                         bool highlight = false;
-                        // Check if current cell is part of diagonal1 or diagonal2
                         if ((i == j && i == 1) || (i == j && i == 0) || (i == j && i == 2))
                         {
                             if (diagonal1Same)
@@ -309,7 +306,6 @@ class Program
                     for (int j = 0; j < 3; j++)
                     {
                         bool highlight = false;
-                        // Check if current cell is part of diagonal1 or diagonal2
                         if ((i == j && i == 1) || (i == j && i == 0) || (i == j && i == 2))
                         {
                             if (diagonal1Same)
@@ -324,7 +320,6 @@ class Program
                                 highlight = true;
                             }
                         }
-                        // Check if current cell is part of row1, row2, or row3
                         if ((i == 0 && row1Same) || (i == 1 && row2Same) || (i == 2 && row3Same))
                         {
                             highlight = true;
@@ -333,7 +328,6 @@ class Program
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
                         }
-                        // Check if current cell is part of column1, column2, or column3
                         if ((j == 0 && column1Same) || (j == 1 && column2Same) || (j == 2 && column3Same))
                         {
                             highlight = true;
