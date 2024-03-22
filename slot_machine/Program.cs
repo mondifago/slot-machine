@@ -118,40 +118,39 @@ class Program
 
             if (cashDepositSelection == 2)
             {
-                for (int j = 0; j < 3; j++)
+                char center = slotMachine[1, 1];
+                char upRight = slotMachine[0, 2];
+                char downLeft = slotMachine[2, 0];
+                char downRight = slotMachine[2, 2];
+                char upLeft = slotMachine[0, 0];
+                char upMiddle = slotMachine[0, 1];
+                char downMiddle = slotMachine[2, 1];
+                char leftMiddle = slotMachine[1, 0];
+                char rightMiddle = slotMachine[1, 2];
+                bool column1Same = upLeft == leftMiddle && leftMiddle == downLeft;
+                bool column2Same = upMiddle == center && center == downMiddle;
+                bool column3Same = upRight == rightMiddle && rightMiddle == downRight;
+                for (int i = 0; i < 3; i++)
                 {
-                    char firstColumnElement = slotMachine[0, j];
-                    bool allSame = true;
-
-                    for (int i = 1; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
                     {
-                        if (!firstColumnElement.Equals(slotMachine[i, j]))
+                        bool highlight = false;
+                        if ((j == 0 && column1Same) || (j == 1 && column2Same) || (j == 2 && column3Same))
                         {
-                            allSame = false;
-                            break;
+                            highlight = true;
                         }
-                    }
-
-                    if (allSame)
-                    {
-                        amountWon += WIN_AMOUNT;
-                        for (int i = 0; i < 3; i++)
+                        if (highlight)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write(slotMachine[i, j] + " ");
-                            Console.ResetColor();
                         }
-                        Console.WriteLine();
+                        Console.Write(slotMachine[i, j] + " ");
+                        Console.ResetColor();
                     }
-                    else
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            Console.Write(slotMachine[i, j] + " ");
-                        }
-                        Console.WriteLine();
-                    }
+                    Console.WriteLine();
                 }
+                if (column1Same) { amountWon += WIN_AMOUNT; }
+                if (column2Same) { amountWon += WIN_AMOUNT; }
+                if (column3Same) { amountWon += WIN_AMOUNT; }
                 Console.WriteLine("you won $" + amountWon);
                 totalAmountWon += amountWon;
                 Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
