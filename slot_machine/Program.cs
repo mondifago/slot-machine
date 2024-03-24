@@ -9,11 +9,30 @@ class Program
 {
     static void Main(string[] args)
     {
-        const int WIN_AMOUNT = 2;
-        const int JACKPOT_WIN = 100;
-        const int SINGLE_LINE_COST = 3;
-        const int DOUBLE_LINE_COST = 5;
-        const int ALL_LINE_COST = 9;
+        const int FIRST_ROW_INDEX = 0;
+        const int SECOND_ROW_INDEX = 1;
+        const int THIRD_ROW_INDEX = 2;
+        const int FOUTH_ROW_INDEX = 3;
+        const int FIRST_COLUMN_INDEX = 0;
+        const int SECOND_COLUMN_INDEX = 1;
+        const int THIRD_COLUMN_INDEX = 2;
+        const int FOUTH_COLUMN_INDEX = 3;
+        const int GRID_ROW_DIM = 3;
+        const int GRID_COLUMN_DIM = 3;
+        const int LIST_START_INDEX = 0;
+        const char LIST_ITEM_1 = 'a';
+        const char LIST_ITEM_2 = 'b';
+        const char LIST_ITEM_3 = 'c';
+        const int FIRST_OPTION = 1;
+        const int SECOND_OPTION = 2;
+        const int THIRD_OPTION = 3;
+        const int FOURTH_OPTION = 4;
+        const int FIFTH_OPTION = 5;
+        const int WIN_AMOUNT = 40;
+        const int JACKPOT_WIN = 200;
+        const int SINGLE_LINE_COST = 10;
+        const int DOUBLE_LINE_COST = 20;
+        const int ALL_LINE_COST = 50;
         int totalAmountDeposited=0;
         int totalAmountWon=0;
         int amountDeposited;
@@ -22,17 +41,17 @@ class Program
         {
             int amountWon = 0;
             Console.WriteLine("*********************************|Welcome to Slot Machine|*********************************\n");
-            Console.WriteLine($"Option 1: - Pay ${SINGLE_LINE_COST} to play for all rows and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option 2: - Pay ${SINGLE_LINE_COST} to play for all columns and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option 3: - Pay ${DOUBLE_LINE_COST} to play for all rows and two diagonals and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option 4: - Pay ${DOUBLE_LINE_COST} to play for all columns and two diagonals and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option 5: - Pay ${ALL_LINE_COST} to play for any line and win ${WIN_AMOUNT} for each line that matches, and ${JACKPOT_WIN} Jackpot if all rows and columns matches\n");
+            Console.WriteLine($"Option {FIRST_OPTION}: - Pay ${SINGLE_LINE_COST} to play for all rows and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Option {SECOND_OPTION}: - Pay ${SINGLE_LINE_COST} to play for all columns and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Option {THIRD_OPTION}: - Pay ${DOUBLE_LINE_COST} to play for all rows and two diagonals and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Option {FOURTH_OPTION}: - Pay ${DOUBLE_LINE_COST} to play for all columns and two diagonals and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Option {FIFTH_OPTION}: - Pay ${ALL_LINE_COST} to play for any line and win ${WIN_AMOUNT} for each line that matches, and ${JACKPOT_WIN} Jackpot if all rows and columns matches\n");
 
             Console.Write("Please choose the option you want to play and press ENTER:\t");
             int cashDepositSelection = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("\n");
 
-            if (cashDepositSelection == 1 || cashDepositSelection == 2)
+            if (cashDepositSelection == FIRST_OPTION || cashDepositSelection == SECOND_OPTION)
             {
                 amountDeposited = SINGLE_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
@@ -40,7 +59,7 @@ class Program
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
-            if (cashDepositSelection == 3 || cashDepositSelection == 4)
+            if (cashDepositSelection == THIRD_OPTION || cashDepositSelection == FOURTH_OPTION)
             {
                 amountDeposited = DOUBLE_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
@@ -48,7 +67,7 @@ class Program
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
-            if (cashDepositSelection == 5)
+            if (cashDepositSelection == FIFTH_OPTION)
             {
                 amountDeposited = ALL_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
@@ -58,14 +77,14 @@ class Program
             }
 
             Random rng = new Random();
-            List<char> listOfChars = new List<char>() { 'a', 'b', 'c', };
-            char[,] slotMachine = new char[3, 3];
+            List<char> listOfChars = new List<char>() { LIST_ITEM_1, LIST_ITEM_2, LIST_ITEM_3, };
+            char[,] slotMachine = new char[GRID_ROW_DIM, GRID_COLUMN_DIM];
 
-            for (int i = 0; i < 3; i++)
+            for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                 {
-                    int randomIndex = rng.Next(0, listOfChars.Count);
+                    int randomIndex = rng.Next(LIST_START_INDEX, listOfChars.Count);
                     slotMachine[i, j] = listOfChars[randomIndex];
                     //Console.WriteLine($"Element at position ({i},{j}): {slotMachine[i, j]}");
                     Console.Write(slotMachine[i, j] + " ");
@@ -76,14 +95,14 @@ class Program
             Console.WriteLine("\n");
             Console.ReadKey();
 
-            if (cashDepositSelection == 1)
+            if (cashDepositSelection == FIRST_OPTION)
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
                 {
-                    char firstRowElement = slotMachine[i, 0];
+                    char firstRowElement = slotMachine[i, FIRST_COLUMN_INDEX];
                     bool allSame = true;
 
-                    for (int j = 1; j < 3; j++)
+                    for (int j = SECOND_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                     {
                         if (!firstRowElement.Equals(slotMachine[i, j]))
                         {
@@ -94,7 +113,7 @@ class Program
                     if (allSame)
                     {
                         amountWon += WIN_AMOUNT;
-                        for (int j = 0; j < 3; j++)
+                        for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.Write(slotMachine[i, j] + " ");
@@ -104,7 +123,7 @@ class Program
                     }
                     else
                     {
-                        for (int j = 0; j < 3; j++)
+                        for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                         {
                             Console.Write(slotMachine[i, j] + " ");
                         }
@@ -116,26 +135,28 @@ class Program
                 Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
             }
 
-            if (cashDepositSelection == 2)
+            if (cashDepositSelection == SECOND_OPTION)
             {
-                char center = slotMachine[1, 1];
-                char upRight = slotMachine[0, 2];
-                char downLeft = slotMachine[2, 0];
-                char downRight = slotMachine[2, 2];
-                char upLeft = slotMachine[0, 0];
-                char upMiddle = slotMachine[0, 1];
-                char downMiddle = slotMachine[2, 1];
-                char leftMiddle = slotMachine[1, 0];
-                char rightMiddle = slotMachine[1, 2];
+                char center = slotMachine[SECOND_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char upRight = slotMachine[FIRST_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char downLeft = slotMachine[THIRD_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char downRight = slotMachine[THIRD_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char upLeft = slotMachine[FIRST_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char upMiddle = slotMachine[FIRST_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char downMiddle = slotMachine[THIRD_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char leftMiddle = slotMachine[SECOND_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char rightMiddle = slotMachine[SECOND_ROW_INDEX, THIRD_COLUMN_INDEX];
+
                 bool column1Same = upLeft == leftMiddle && leftMiddle == downLeft;
                 bool column2Same = upMiddle == center && center == downMiddle;
                 bool column3Same = upRight == rightMiddle && rightMiddle == downRight;
-                for (int i = 0; i < 3; i++)
+
+                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                     {
                         bool highlight = false;
-                        if ((j == 0 && column1Same) || (j == 1 && column2Same) || (j == 2 && column3Same))
+                        if ((j == FIRST_COLUMN_INDEX && column1Same) || (j == SECOND_COLUMN_INDEX && column2Same) || (j == THIRD_COLUMN_INDEX && column3Same))
                         {
                             highlight = true;
                         }
@@ -156,17 +177,17 @@ class Program
                 Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
             }
 
-            if (cashDepositSelection == 3)
+            if (cashDepositSelection == THIRD_OPTION)
             {
-                char center = slotMachine[1, 1];
-                char upRight = slotMachine[0, 2];
-                char downLeft = slotMachine[2, 0];
-                char downRight = slotMachine[2, 2];
-                char upLeft = slotMachine[0, 0];
-                char upMiddle = slotMachine[0, 1];
-                char downMiddle = slotMachine[2, 1];
-                char leftMiddle = slotMachine[1, 0];
-                char rightMiddle = slotMachine[1, 2];
+                char center = slotMachine[SECOND_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char upRight = slotMachine[FIRST_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char downLeft = slotMachine[THIRD_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char downRight = slotMachine[THIRD_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char upLeft = slotMachine[FIRST_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char upMiddle = slotMachine[FIRST_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char downMiddle = slotMachine[THIRD_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char leftMiddle = slotMachine[SECOND_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char rightMiddle = slotMachine[SECOND_ROW_INDEX, THIRD_COLUMN_INDEX];
 
                 bool diagonal1Same = upLeft == center && downRight == center;
                 bool diagonal2Same = upRight == center && downLeft == center;
@@ -174,20 +195,20 @@ class Program
                 bool row2Same = leftMiddle == center && center == rightMiddle;
                 bool row3Same = downLeft == downMiddle && downMiddle == downRight;
                 // Print the grid
-                for (int i = 0; i < 3; i++)
+                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                     {
                         bool highlight = false;
                         // Check if current cell is part of diagonal1 or diagonal2
-                        if ((i == j && i == 1) || (i == j && i == 0) || (i == j && i == 2))
+                        if ((i == j && i == SECOND_ROW_INDEX) || (i == j && i == FIRST_ROW_INDEX) || (i == j && i == THIRD_ROW_INDEX))
                         {
                             if (diagonal1Same)
                             {
                                 highlight = true;
                             }
                         }
-                        if ((i == j && i == 1) || (i == 0 && j == 2) || (i == 2 && j == 0))
+                        if ((i == j && i == SECOND_ROW_INDEX) || (i == FIRST_ROW_INDEX && j == THIRD_COLUMN_INDEX) || (i == THIRD_ROW_INDEX && j == FIRST_COLUMN_INDEX))
                         {
                             if (diagonal2Same)
                             {
@@ -195,7 +216,7 @@ class Program
                             }
                         }
                         // Check if current cell is part of row1, row2, or row3
-                        if ((i == 0 && row1Same) || (i == 1 && row2Same) || (i == 2 && row3Same))
+                        if ((i == FIRST_ROW_INDEX && row1Same) || (i == SECOND_ROW_INDEX && row2Same) || (i == THIRD_ROW_INDEX && row3Same))
                         {
                             highlight = true;
                         }
@@ -218,17 +239,17 @@ class Program
                 Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
             }
 
-            if (cashDepositSelection == 4)
+            if (cashDepositSelection == FOURTH_OPTION)
             {
-                char center = slotMachine[1, 1];
-                char upRight = slotMachine[0, 2];
-                char downLeft = slotMachine[2, 0];
-                char downRight = slotMachine[2, 2];
-                char upLeft = slotMachine[0, 0];
-                char upMiddle = slotMachine[0, 1];
-                char downMiddle = slotMachine[2, 1];
-                char leftMiddle = slotMachine[1, 0];
-                char rightMiddle = slotMachine[1, 2];
+                char center = slotMachine[SECOND_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char upRight = slotMachine[FIRST_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char downLeft = slotMachine[THIRD_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char downRight = slotMachine[THIRD_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char upLeft = slotMachine[FIRST_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char upMiddle = slotMachine[FIRST_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char downMiddle = slotMachine[THIRD_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char leftMiddle = slotMachine[SECOND_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char rightMiddle = slotMachine[SECOND_ROW_INDEX, THIRD_COLUMN_INDEX];
 
                 bool column1Same = upLeft == leftMiddle && leftMiddle == downLeft;
                 bool column2Same = upMiddle == center && center == downMiddle;
@@ -236,19 +257,19 @@ class Program
                 bool diagonal1Same = upLeft == center && downRight == center;
                 bool diagonal2Same = upRight == center && downLeft == center;
                 
-                for (int i = 0; i < 3; i++)
+                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                     {
                         bool highlight = false;
-                        if ((i == j && i == 1) || (i == j && i == 0) || (i == j && i == 2))
+                        if ((i == j && i == SECOND_ROW_INDEX) || (i == j && i == FIRST_ROW_INDEX) || (i == j && i == THIRD_ROW_INDEX))
                         {
                             if (diagonal1Same)
                             {
                                 highlight = true;
                             }
                         }
-                        if ((i == j && i == 1) || (i == 0 && j == 2) || (i == 2 && j == 0))
+                        if ((i == j && i == SECOND_ROW_INDEX) || (i == FIRST_ROW_INDEX && j == THIRD_COLUMN_INDEX) || (i == THIRD_ROW_INDEX && j == FIRST_COLUMN_INDEX))
                         {
                             if (diagonal2Same)
                             {
@@ -256,7 +277,7 @@ class Program
                             }
                         }
                         // Check if current cell is part of column1, column2, or column3
-                        if ((j == 0 && column1Same) || (j == 1 && column2Same) || (j == 2 && column3Same))
+                        if ((j == FIRST_COLUMN_INDEX && column1Same) || (j == SECOND_COLUMN_INDEX && column2Same) || (j == THIRD_COLUMN_INDEX && column3Same))
                         {
                             highlight = true;
                         }
@@ -279,17 +300,17 @@ class Program
                 Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
             }
 
-            if (cashDepositSelection == 5)
+            if (cashDepositSelection == FIFTH_OPTION)
             {
-                char center = slotMachine[1, 1];
-                char upRight = slotMachine[0, 2];
-                char downLeft = slotMachine[2, 0];
-                char downRight = slotMachine[2, 2];
-                char upLeft = slotMachine[0, 0];
-                char upMiddle = slotMachine[0, 1];
-                char downMiddle = slotMachine[2, 1];
-                char leftMiddle = slotMachine[1, 0];
-                char rightMiddle = slotMachine[1, 2];
+                char center = slotMachine[SECOND_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char upRight = slotMachine[FIRST_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char downLeft = slotMachine[THIRD_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char downRight = slotMachine[THIRD_ROW_INDEX, THIRD_COLUMN_INDEX];
+                char upLeft = slotMachine[FIRST_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char upMiddle = slotMachine[FIRST_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char downMiddle = slotMachine[THIRD_ROW_INDEX, SECOND_COLUMN_INDEX];
+                char leftMiddle = slotMachine[SECOND_ROW_INDEX, FIRST_COLUMN_INDEX];
+                char rightMiddle = slotMachine[SECOND_ROW_INDEX, THIRD_COLUMN_INDEX];
 
                 bool column1Same = upLeft == leftMiddle && leftMiddle == downLeft;
                 bool column2Same = upMiddle == center && center == downMiddle;
@@ -300,26 +321,26 @@ class Program
                 bool row2Same = leftMiddle == center && center == rightMiddle;
                 bool row3Same = downLeft == downMiddle && downMiddle == downRight;
 
-                for (int i = 0; i < 3; i++)
+                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
                     {
                         bool highlight = false;
-                        if ((i == j && i == 1) || (i == j && i == 0) || (i == j && i == 2))
+                        if ((i == j && i == SECOND_ROW_INDEX) || (i == j && i == FIRST_ROW_INDEX) || (i == j && i == THIRD_ROW_INDEX))
                         {
                             if (diagonal1Same)
                             {
                                 highlight = true;
                             }
                         }
-                        if ((i == j && i == 1) || (i == 0 && j == 2) || (i == 2 && j == 0))
+                        if ((i == j && i == SECOND_ROW_INDEX) || (i == FIRST_ROW_INDEX && j == THIRD_COLUMN_INDEX) || (i == THIRD_ROW_INDEX && j == FIRST_COLUMN_INDEX))
                         {
                             if (diagonal2Same)
                             {
                                 highlight = true;
                             }
                         }
-                        if ((i == 0 && row1Same) || (i == 1 && row2Same) || (i == 2 && row3Same))
+                        if ((i == FIRST_ROW_INDEX && row1Same) || (i == SECOND_ROW_INDEX && row2Same) || (i == THIRD_ROW_INDEX && row3Same))
                         {
                             highlight = true;
                         }
@@ -327,7 +348,7 @@ class Program
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
                         }
-                        if ((j == 0 && column1Same) || (j == 1 && column2Same) || (j == 2 && column3Same))
+                        if ((j == FIRST_COLUMN_INDEX && column1Same) || (j == SECOND_COLUMN_INDEX && column2Same) || (j == THIRD_COLUMN_INDEX && column3Same))
                         {
                             highlight = true;
                         }
@@ -356,7 +377,6 @@ class Program
                 totalAmountWon += amountWon;
                 Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
             }
-
             Console.WriteLine("\n");
             Console.WriteLine("Press any to continue...");
             Console.ReadKey();
