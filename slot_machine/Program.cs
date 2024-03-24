@@ -36,7 +36,10 @@ class Program
         int totalAmountDeposited=0;
         int totalAmountWon=0;
         int amountDeposited;
-        
+        Random rng = new Random();
+        List<char> listOfChars = new List<char>() { LIST_ITEM_1, LIST_ITEM_2, LIST_ITEM_3, };
+        char[,] slotMachine = new char[GRID_ROW_DIM, GRID_COLUMN_DIM];
+
         while (true)
         {
             int amountWon = 0;
@@ -75,10 +78,6 @@ class Program
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
-
-            Random rng = new Random();
-            List<char> listOfChars = new List<char>() { LIST_ITEM_1, LIST_ITEM_2, LIST_ITEM_3, };
-            char[,] slotMachine = new char[GRID_ROW_DIM, GRID_COLUMN_DIM];
 
             for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
             {
