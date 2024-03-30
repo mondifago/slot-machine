@@ -96,42 +96,60 @@ class Program
 
             if (cashDepositSelection == FIRST_OPTION)
             {
-                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
-                {
-                    char firstRowElement = slotMachine[i, FIRST_COLUMN_INDEX];
-                    bool allSame = true;
+                bool anyRowSame = CheckIfAnyRowIsUniform(slotMachine);
 
-                    for (int j = SECOND_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
-                    {
-                        if (!firstRowElement.Equals(slotMachine[i, j]))
-                        {
-                            allSame = false;
-                            break;
-                        }
-                    }
-                    if (allSame)
+                for (int i = 0; i < slotMachine.GetLength(0); i++)
+                {
+                    if (anyRowSame && RowIsUniform(slotMachine, i))
                     {
                         amountWon += WIN_AMOUNT;
-                        for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write(slotMachine[i, j] + " ");
-                            Console.ResetColor();
-                        }
-                        Console.WriteLine();
+                        PrintRowInGreen(slotMachine, i);
                     }
                     else
                     {
-                        for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
-                        {
-                            Console.Write(slotMachine[i, j] + " ");
-                        }
-                        Console.WriteLine();
+                        PrintRow(slotMachine, i);
                     }
                 }
                 Console.WriteLine("you won $" + amountWon);
                 totalAmountWon += amountWon;
                 Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+            }
+
+            static bool CheckIfAnyRowIsUniform(char[,] slotMachine)
+            {
+                for (int i = 0; i < slotMachine.GetLength(0); i++)
+                {
+                    if (RowIsUniform(slotMachine, i))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            static bool RowIsUniform(char[,] slotMachine, int rowIndex)
+            {
+                char[] rowElements = new char[slotMachine.GetLength(1)]; // Number of columns
+                for (int j = 0; j < slotMachine.GetLength(1); j++)
+                {
+                    rowElements[j] = slotMachine[rowIndex, j];
+                }
+                return rowElements.Distinct().Count() == 1;
+            }
+
+            static void PrintRow(char[,] slotMachine, int rowIndex)
+            {
+                for (int j = 0; j < slotMachine.GetLength(1); j++)
+                {
+                    Console.Write(slotMachine[rowIndex, j] + " ");
+                }
+                Console.WriteLine();
+            }
+
+            static void PrintRowInGreen(char[,] slotMachine, int rowIndex)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                PrintRow(slotMachine, rowIndex);
+                Console.ResetColor();
             }
 
             if (cashDepositSelection == SECOND_OPTION)
