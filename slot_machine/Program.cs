@@ -9,14 +9,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        const int FIRST_ROW_INDEX = 0;
-        const int SECOND_ROW_INDEX = 1;
-        const int THIRD_ROW_INDEX = 2;
-        const int FOUTH_ROW_INDEX = 3;
-        const int FIRST_COLUMN_INDEX = 0;
-        const int SECOND_COLUMN_INDEX = 1;
-        const int THIRD_COLUMN_INDEX = 2;
-        const int FOUTH_COLUMN_INDEX = 3;
+
         const int GRID_ROW_DIM = 3;
         const int GRID_COLUMN_DIM = 3;
         const int LIST_START_INDEX = 0;
@@ -33,8 +26,8 @@ class Program
         const int SINGLE_LINE_COST = 10;
         const int DOUBLE_LINE_COST = 20;
         const int ALL_LINE_COST = 50;
-        int totalAmountDeposited=0;
-        int totalAmountWon=0;
+        int totalAmountDeposited = 0;
+        int totalAmountWon = 0;
         int amountDeposited;
         Random rng = new Random();
         List<char> listOfChars = new List<char>() { LIST_ITEM_1, LIST_ITEM_2, LIST_ITEM_3, };
@@ -79,9 +72,9 @@ class Program
                 Console.WriteLine("\n");
             }
 
-            for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
+            for (int i = 0; i < 3; i++)
             {
-                for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
+                for (int j = 0; j < 3; j++)
                 {
                     int randomIndex = rng.Next(LIST_START_INDEX, listOfChars.Count);
                     slotMachine[i, j] = listOfChars[randomIndex];
@@ -96,296 +89,56 @@ class Program
 
             if (cashDepositSelection == FIRST_OPTION)
             {
-                for (int i = 0; i < slotMachine.GetLength(0); i++)
-                {
-                    if (RowIsUniform(slotMachine, i))
-                    {
-                        amountWon += WIN_AMOUNT;
-                        PrintRowInGreen(slotMachine, i);
-                    }
-                    else
-                    {
-                        PrintRow(slotMachine, i);
-                    }
-                }
-                Console.WriteLine("you won $" + amountWon);
-                totalAmountWon += amountWon;
-                Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
-            }
+                bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
+                                      .Select(i => RowIsUniform(slotMachine, i))
+                                      .ToArray();
 
-            static bool RowIsUniform(char[,] slotMachine, int rowIndex)
-            {
-                char[] rowElements = new char[slotMachine.GetLength(1)]; // Number of columns
-                for (int j = 0; j < slotMachine.GetLength(1); j++)
-                {
-                    rowElements[j] = slotMachine[rowIndex, j];
-                }
-                return rowElements.Distinct().Count() == 1;
-            }
-
-            static void PrintRow(char[,] slotMachine, int rowIndex)
-            {
-                for (int j = 0; j < slotMachine.GetLength(1); j++)
-                {
-                    Console.Write(slotMachine[rowIndex, j] + " ");
-                }
-                Console.WriteLine();
-            }
-
-            static void PrintRowInGreen(char[,] slotMachine, int rowIndex)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                PrintRow(slotMachine, rowIndex);
-                Console.ResetColor();
+                PrintOptionOneWithHighlighting(slotMachine, uniformRows);
             }
 
             if (cashDepositSelection == SECOND_OPTION)
             {
-                bool[] uniformColumns = new bool[slotMachine.GetLength(1)];
-                for (int j = 0; j < slotMachine.GetLength(1); j++)
-                {
-                    uniformColumns[j] = ColumnIsUniform(slotMachine, j);
-                }
+                bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
+                                           .Select(j => ColumnIsUniform(slotMachine, j))
+                                           .ToArray();
 
-                for (int i = 0; i < slotMachine.GetLength(0); i++)
-                if (ColumnIsUniform(slotMachine, i))
-                {
-                    amountWon += WIN_AMOUNT;
-                }
-                // Print the grid, highlighting uniform columns.
-                PrintGridWithHighlighting(slotMachine, uniformColumns);
-                Console.WriteLine("you won $" + amountWon);
-                totalAmountWon += amountWon;
-                Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+                PrintOptionTwoWithHighlighting(slotMachine, uniformColumns);
             }
-                
-                static bool ColumnIsUniform(char[,] slotMachine, int columnIndex)
-                {
-                    char[] columnElements = new char[slotMachine.GetLength(0)]; // Number of rows
-                    for (int i = 0; i < slotMachine.GetLength(0); i++)
-                    {
-                        columnElements[i] = slotMachine[i, columnIndex];
-                    }
-                    return columnElements.Distinct().Count() == 1;
-                }
-
-                static void PrintGridWithHighlighting(char[,] grid, bool[] uniformColumns)
-                {
-                    for (int i = 0; i < grid.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < grid.GetLength(1); j++)
-                        {
-                        // Highlight the column if it has uniform elements.
-                            if (uniformColumns[j])
-                            {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            }
-                            Console.Write(grid[i, j] + " ");
-                            Console.ResetColor();
-                        }
-                        Console.WriteLine();
-                    }
-                }
 
             if (cashDepositSelection == THIRD_OPTION)
             {
-                char center = slotMachine[SECOND_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char upRight = slotMachine[FIRST_ROW_INDEX, THIRD_COLUMN_INDEX];
-                char downLeft = slotMachine[THIRD_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char downRight = slotMachine[THIRD_ROW_INDEX, THIRD_COLUMN_INDEX];
-                char upLeft = slotMachine[FIRST_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char upMiddle = slotMachine[FIRST_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char downMiddle = slotMachine[THIRD_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char leftMiddle = slotMachine[SECOND_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char rightMiddle = slotMachine[SECOND_ROW_INDEX, THIRD_COLUMN_INDEX];
+                bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
+                                      .Select(i => RowIsUniform(slotMachine, i))
+                                      .ToArray();
+                bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
+                bool isRightDiagonalUniform = CheckDiagonalUniform(slotMachine, false);
 
-                bool diagonal1Same = upLeft == center && downRight == center;
-                bool diagonal2Same = upRight == center && downLeft == center;
-                bool row1Same = upLeft == upMiddle && upMiddle == upRight;
-                bool row2Same = leftMiddle == center && center == rightMiddle;
-                bool row3Same = downLeft == downMiddle && downMiddle == downRight;
-                // Print the grid
-                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
-                {
-                    for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
-                    {
-                        bool highlight = false;
-                        // Check if current cell is part of diagonal1 or diagonal2
-                        if ((i == j && i == SECOND_ROW_INDEX) || (i == j && i == FIRST_ROW_INDEX) || (i == j && i == THIRD_ROW_INDEX))
-                        {
-                            if (diagonal1Same)
-                            {
-                                highlight = true;
-                            }
-                        }
-                        if ((i == j && i == SECOND_ROW_INDEX) || (i == FIRST_ROW_INDEX && j == THIRD_COLUMN_INDEX) || (i == THIRD_ROW_INDEX && j == FIRST_COLUMN_INDEX))
-                        {
-                            if (diagonal2Same)
-                            {
-                                highlight = true;
-                            }
-                        }
-                        // Check if current cell is part of row1, row2, or row3
-                        if ((i == FIRST_ROW_INDEX && row1Same) || (i == SECOND_ROW_INDEX && row2Same) || (i == THIRD_ROW_INDEX && row3Same))
-                        {
-                            highlight = true;
-                        }
-                        if (highlight)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                        }
-                        Console.Write(slotMachine[i, j] + " ");
-                        Console.ResetColor();
-                    }
-                    Console.WriteLine();
-                }
-                if (row1Same) { amountWon += WIN_AMOUNT; }
-                if (row2Same) { amountWon += WIN_AMOUNT; }
-                if (row3Same) { amountWon += WIN_AMOUNT; }
-                if (diagonal1Same) { amountWon += WIN_AMOUNT; }
-                if (diagonal2Same) { amountWon += WIN_AMOUNT; }
-                Console.WriteLine("you won $" + amountWon);
-                totalAmountWon += amountWon;
-                Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+                PrintOptionThreeWithHighlighting(slotMachine, uniformRows, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
             if (cashDepositSelection == FOURTH_OPTION)
             {
-                char center = slotMachine[SECOND_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char upRight = slotMachine[FIRST_ROW_INDEX, THIRD_COLUMN_INDEX];
-                char downLeft = slotMachine[THIRD_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char downRight = slotMachine[THIRD_ROW_INDEX, THIRD_COLUMN_INDEX];
-                char upLeft = slotMachine[FIRST_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char upMiddle = slotMachine[FIRST_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char downMiddle = slotMachine[THIRD_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char leftMiddle = slotMachine[SECOND_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char rightMiddle = slotMachine[SECOND_ROW_INDEX, THIRD_COLUMN_INDEX];
+                bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
+                                           .Select(j => ColumnIsUniform(slotMachine, j))
+                                           .ToArray();
+                bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
+                bool isRightDiagonalUniform = CheckDiagonalUniform(slotMachine, false);
 
-                bool column1Same = upLeft == leftMiddle && leftMiddle == downLeft;
-                bool column2Same = upMiddle == center && center == downMiddle;
-                bool column3Same = upRight == rightMiddle && rightMiddle == downRight;
-                bool diagonal1Same = upLeft == center && downRight == center;
-                bool diagonal2Same = upRight == center && downLeft == center;
-                
-                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
-                {
-                    for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
-                    {
-                        bool highlight = false;
-                        if ((i == j && i == SECOND_ROW_INDEX) || (i == j && i == FIRST_ROW_INDEX) || (i == j && i == THIRD_ROW_INDEX))
-                        {
-                            if (diagonal1Same)
-                            {
-                                highlight = true;
-                            }
-                        }
-                        if ((i == j && i == SECOND_ROW_INDEX) || (i == FIRST_ROW_INDEX && j == THIRD_COLUMN_INDEX) || (i == THIRD_ROW_INDEX && j == FIRST_COLUMN_INDEX))
-                        {
-                            if (diagonal2Same)
-                            {
-                                highlight = true;
-                            }
-                        }
-                        // Check if current cell is part of column1, column2, or column3
-                        if ((j == FIRST_COLUMN_INDEX && column1Same) || (j == SECOND_COLUMN_INDEX && column2Same) || (j == THIRD_COLUMN_INDEX && column3Same))
-                        {
-                            highlight = true;
-                        }
-                        if (highlight)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                        }
-                        Console.Write(slotMachine[i, j] + " ");
-                        Console.ResetColor();
-                    }
-                    Console.WriteLine();
-                }
-                if (column1Same) { amountWon += WIN_AMOUNT; }
-                if (column2Same) { amountWon += WIN_AMOUNT; }
-                if (column3Same) { amountWon += WIN_AMOUNT; }
-                if (diagonal1Same) { amountWon += WIN_AMOUNT; }
-                if (diagonal2Same) { amountWon += WIN_AMOUNT; }
-                Console.WriteLine("you won $" + amountWon);
-                totalAmountWon += amountWon;
-                Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+                PrintOptionFourWithHighlighting(slotMachine, uniformColumns, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
             if (cashDepositSelection == FIFTH_OPTION)
             {
-                char center = slotMachine[SECOND_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char upRight = slotMachine[FIRST_ROW_INDEX, THIRD_COLUMN_INDEX];
-                char downLeft = slotMachine[THIRD_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char downRight = slotMachine[THIRD_ROW_INDEX, THIRD_COLUMN_INDEX];
-                char upLeft = slotMachine[FIRST_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char upMiddle = slotMachine[FIRST_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char downMiddle = slotMachine[THIRD_ROW_INDEX, SECOND_COLUMN_INDEX];
-                char leftMiddle = slotMachine[SECOND_ROW_INDEX, FIRST_COLUMN_INDEX];
-                char rightMiddle = slotMachine[SECOND_ROW_INDEX, THIRD_COLUMN_INDEX];
+                bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
+                                      .Select(i => RowIsUniform(slotMachine, i))
+                                      .ToArray();
+                bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
+                                           .Select(j => ColumnIsUniform(slotMachine, j))
+                                           .ToArray();
+                bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
+                bool isRightDiagonalUniform = CheckDiagonalUniform(slotMachine, false);
 
-                bool column1Same = upLeft == leftMiddle && leftMiddle == downLeft;
-                bool column2Same = upMiddle == center && center == downMiddle;
-                bool column3Same = upRight == rightMiddle && rightMiddle == downRight;
-                bool diagonal1Same = upLeft == center && downRight == center;
-                bool diagonal2Same = upRight == center && downLeft == center;
-                bool row1Same = upLeft == upMiddle && upMiddle == upRight;
-                bool row2Same = leftMiddle == center && center == rightMiddle;
-                bool row3Same = downLeft == downMiddle && downMiddle == downRight;
-
-                for (int i = FIRST_ROW_INDEX; i < FOUTH_ROW_INDEX; i++)
-                {
-                    for (int j = FIRST_COLUMN_INDEX; j < FOUTH_COLUMN_INDEX; j++)
-                    {
-                        bool highlight = false;
-                        if ((i == j && i == SECOND_ROW_INDEX) || (i == j && i == FIRST_ROW_INDEX) || (i == j && i == THIRD_ROW_INDEX))
-                        {
-                            if (diagonal1Same)
-                            {
-                                highlight = true;
-                            }
-                        }
-                        if ((i == j && i == SECOND_ROW_INDEX) || (i == FIRST_ROW_INDEX && j == THIRD_COLUMN_INDEX) || (i == THIRD_ROW_INDEX && j == FIRST_COLUMN_INDEX))
-                        {
-                            if (diagonal2Same)
-                            {
-                                highlight = true;
-                            }
-                        }
-                        if ((i == FIRST_ROW_INDEX && row1Same) || (i == SECOND_ROW_INDEX && row2Same) || (i == THIRD_ROW_INDEX && row3Same))
-                        {
-                            highlight = true;
-                        }
-                        if (highlight)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                        }
-                        if ((j == FIRST_COLUMN_INDEX && column1Same) || (j == SECOND_COLUMN_INDEX && column2Same) || (j == THIRD_COLUMN_INDEX && column3Same))
-                        {
-                            highlight = true;
-                        }
-                        if (highlight)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                        }
-                        Console.Write(slotMachine[i, j] + " ");
-                        Console.ResetColor();
-                    }
-                    Console.WriteLine();
-                }
-                if (row1Same) { amountWon += WIN_AMOUNT; }
-                if (row2Same) { amountWon += WIN_AMOUNT; }
-                if (row3Same) { amountWon += WIN_AMOUNT; }
-                if (column1Same) { amountWon += WIN_AMOUNT; }
-                if (column2Same) { amountWon += WIN_AMOUNT; }
-                if (column3Same) { amountWon += WIN_AMOUNT; }
-                if (diagonal1Same) { amountWon += WIN_AMOUNT; }
-                if (diagonal2Same) { amountWon += WIN_AMOUNT; }
-                if (row1Same && row2Same && row3Same && column1Same && column2Same && column3Same && diagonal1Same && diagonal2Same)
-                {
-                    amountWon += JACKPOT_WIN;
-                }
-                Console.WriteLine("you won $" + amountWon);
-                totalAmountWon += amountWon;
-                Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+                PrintOptionFiveWithHighlighting(slotMachine, uniformRows, uniformColumns, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
             Console.WriteLine("\n");
             Console.WriteLine("Press any to continue...");
@@ -400,6 +153,120 @@ class Program
             Console.WriteLine("\n");
         }
 
+        static bool RowIsUniform(char[,] slotMachine, int rowIndex)
+        {
+            char[] rowElements = Enumerable.Range(0, slotMachine.GetLength(1))
+                                           .Select(j => slotMachine[rowIndex, j])
+                                           .ToArray();
+            return rowElements.Distinct().Count() == 1;
+        }
+
+        static bool ColumnIsUniform(char[,] slotMachine, int columnIndex)
+        {
+            char[] columnElements = Enumerable.Range(0, slotMachine.GetLength(0))
+                                              .Select(i => slotMachine[i, columnIndex])
+                                              .ToArray();
+            return columnElements.Distinct().Count() == 1;
+        }
+
+        static bool CheckDiagonalUniform(char[,] slotMachine, bool leftDiagonal)
+        {
+            char[] diagonalElements = Enumerable.Range(0, slotMachine.GetLength(0))
+                                                .Select(i => leftDiagonal ? slotMachine[i, i] : slotMachine[i, slotMachine.GetLength(1) - 1 - i])
+                                                .ToArray();
+            return diagonalElements.Distinct().Count() == 1;
+        }
+
+        static void PrintOptionFiveWithHighlighting(char[,] slotMachine, bool[] uniformRows, bool[] uniformColumns, bool isLeftDiagonalUniform, bool isRightDiagonalUniform)
+        {
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                for (int j = 0; j < slotMachine.GetLength(1); j++)
+                { 
+                    bool isRowUniform = uniformRows[i];
+                    bool isColumnUniform = uniformColumns[j];
+                    bool isDiagonal = (i == j && isLeftDiagonalUniform) || (i == slotMachine.GetLength(1) - 1 - j && isRightDiagonalUniform);
+                    if (isRowUniform || isColumnUniform || isDiagonal)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    Console.Write(slotMachine[i, j] + " ");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void PrintOptionFourWithHighlighting(char[,] slotMachine, bool[] uniformColumns, bool isLeftDiagonalUniform, bool isRightDiagonalUniform)
+        {
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                for (int j = 0; j < slotMachine.GetLength(1); j++)
+                {
+                    bool isDiagonal = (i == j && isLeftDiagonalUniform) || (i == slotMachine.GetLength(1) - 1 - j && isRightDiagonalUniform);
+                    if (uniformColumns[j] || isDiagonal)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    Console.Write(slotMachine[i, j] + " ");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void PrintOptionThreeWithHighlighting(char[,] slotMachine, bool[] uniformRows, bool isLeftDiagonalUniform, bool isRightDiagonalUniform)
+        {
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                for (int j = 0; j < slotMachine.GetLength(1); j++)
+                {
+                    bool isDiagonal = (i == j && isLeftDiagonalUniform) || (i == slotMachine.GetLength(1) - 1 - j && isRightDiagonalUniform);
+                    if (uniformRows[i] || isDiagonal)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    Console.Write(slotMachine[i, j] + " ");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void PrintOptionTwoWithHighlighting(char[,] slotMachine, bool[] uniformColumns)
+        {
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                for (int j = 0; j < slotMachine.GetLength(1); j++)
+                {
+                    if (uniformColumns[j])
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    Console.Write(slotMachine[i, j] + " ");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void PrintOptionOneWithHighlighting(char[,] slotMachine, bool[] uniformRows)
+        {
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                for (int j = 0; j < slotMachine.GetLength(1); j++)
+                {
+                    if (uniformRows[i])
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    Console.Write(slotMachine[i, j] + " ");
+                    Console.ResetColor();
+                }
+                Console.WriteLine();
+            }
+        }
     }
+       
 }
 
