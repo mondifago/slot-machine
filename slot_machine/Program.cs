@@ -35,7 +35,7 @@ class Program
 
         while (true)
         {
-            int amountWon = 0;
+            //int amountWon = 0;
             Console.WriteLine("*********************************|Welcome to Slot Machine|*********************************\n");
             Console.WriteLine($"Option {FIRST_OPTION}: - Pay ${SINGLE_LINE_COST} to play for all rows and win ${WIN_AMOUNT} for each line that matches");
             Console.WriteLine($"Option {SECOND_OPTION}: - Pay ${SINGLE_LINE_COST} to play for all columns and win ${WIN_AMOUNT} for each line that matches");
