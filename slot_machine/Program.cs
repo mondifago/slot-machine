@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Linq;
+using Microsoft.VisualBasic.FileIO;
 
 namespace slot_machine;
 
@@ -35,7 +36,6 @@ class Program
 
         while (true)
         {
-            //int amountWon = 0;
             Console.WriteLine("*********************************|Welcome to Slot Machine|*********************************\n");
             Console.WriteLine($"Option {FIRST_OPTION}: - Pay ${SINGLE_LINE_COST} to play for all rows and win ${WIN_AMOUNT} for each line that matches");
             Console.WriteLine($"Option {SECOND_OPTION}: - Pay ${SINGLE_LINE_COST} to play for all columns and win ${WIN_AMOUNT} for each line that matches");
@@ -140,6 +140,13 @@ class Program
 
                 PrintOptionFiveWithHighlighting(slotMachine, uniformRows, uniformColumns, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
+
+
+            int amountWon = CalculateWinnings(cashDepositSelection, slotMachine);
+            Console.WriteLine("you won $" + amountWon);
+            totalAmountWon += amountWon;
+            Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+
             Console.WriteLine("\n");
             Console.WriteLine("Press any to continue...");
             Console.ReadKey();
@@ -259,14 +266,105 @@ class Program
                     if (uniformRows[i])
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
+                        
                     }
                     Console.Write(slotMachine[i, j] + " ");
                     Console.ResetColor();
                 }
-                Console.WriteLine();
+                Console.WriteLine(); 
             }
         }
+
+
+        static int CalculateWinnings(int cashDepositSelection, char[,] slotMachine)
+        {
+            int amountWon = 0;
+            switch (cashDepositSelection)
+            {
+                case FIRST_OPTION:
+                    amountWon = CheckRowWin(slotMachine);
+                    break;
+                case SECOND_OPTION:
+                    amountWon = CheckColumnWin(slotMachine);
+                    break;
+                case THIRD_OPTION:
+                    amountWon = CheckRowOrDiagonalWin(slotMachine);
+                    break;
+                case FOURTH_OPTION:
+                    amountWon = CheckColumnOrDiagonalWin(slotMachine);
+                    break;
+                case FIFTH_OPTION:
+                    amountWon = CheckRowOrColumnDiagonalWin(slotMachine);
+                    break;
+            }
+            return amountWon;
+        }
+
+        static int CheckRowWin(char[,] slotMachine)
+        {
+            int amountWon = 0;
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                if (RowIsUniform(slotMachine, i))
+                    amountWon += WIN_AMOUNT;
+            }
+            return amountWon;
+        }
+
+        static int CheckColumnWin(char[,] slotMachine)
+        {
+            int amountWon = 0;
+            for (int j = 0; j < slotMachine.GetLength(1); j++)
+            {
+                if (ColumnIsUniform(slotMachine, j))
+                    amountWon += WIN_AMOUNT;
+            }
+            return amountWon;
+        }
+
+        static int CheckRowOrDiagonalWin(char[,] slotMachine)
+        {
+            int amountWon = 0;
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                if (RowIsUniform(slotMachine, i) || CheckDiagonalUniform(slotMachine, true) || CheckDiagonalUniform(slotMachine, false))
+                    amountWon += WIN_AMOUNT;
+            }
+            return amountWon;
+        }
+
+        static int CheckColumnOrDiagonalWin(char[,] slotMachine)
+        {
+            int amountWon = 0;
+            for (int j = 0; j < slotMachine.GetLength(1); j++)
+            {
+                if (ColumnIsUniform(slotMachine, j) || CheckDiagonalUniform(slotMachine, true) || CheckDiagonalUniform(slotMachine, false))
+                    amountWon += WIN_AMOUNT;
+            }
+            return amountWon;
+        }
+
+        static int CheckRowOrColumnDiagonalWin(char[,] slotMachine)
+        {
+            int amountWon = 0;
+            for (int i = 0; i < slotMachine.GetLength(0); i++)
+            {
+                if (RowIsUniform(slotMachine, i))
+                    amountWon += WIN_AMOUNT;
+            }
+            for (int j = 0; j < slotMachine.GetLength(1); j++)
+            {
+                if (ColumnIsUniform(slotMachine, j))
+                    amountWon += WIN_AMOUNT;
+            }
+            if (CheckDiagonalUniform(slotMachine, true) || CheckDiagonalUniform(slotMachine, false))
+                amountWon += WIN_AMOUNT;
+            return amountWon;
+
+
+        }
+
     }
-       
+
 }
 
