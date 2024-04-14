@@ -25,7 +25,6 @@ class Program
     const int DOUBLE_LINE_COST = 20;
     const int ALL_LINE_COST = 50;
     
-
     static int CheckRowWin(char[,] slotMachine)
     {
         int amountWon = 0;
@@ -51,11 +50,15 @@ class Program
     static int CheckRowOrDiagonalWin(char[,] slotMachine)
     {
         int amountWon = 0;
-       for (int i = 0; i < slotMachine.GetLength(0); i++)
+        for (int i = 0; i < slotMachine.GetLength(0); i++)
         {
-            if (RowIsUniform(slotMachine,i) || CheckDiagonalUniform(slotMachine, true) || CheckDiagonalUniform(slotMachine, false))
+            if (RowIsUniform(slotMachine, i))
                 amountWon += WIN_AMOUNT;
         }
+        if (CheckDiagonalUniform(slotMachine, true))
+            amountWon += WIN_AMOUNT;
+        if (CheckDiagonalUniform(slotMachine, false))
+            amountWon += WIN_AMOUNT;
         return amountWon;
     }
 
@@ -64,9 +67,13 @@ class Program
         int amountWon = 0;
         for (int j = 0; j < slotMachine.GetLength(1); j++)
         {
-            if (ColumnIsUniform(slotMachine, j) || CheckDiagonalUniform(slotMachine, true) || CheckDiagonalUniform(slotMachine, false))
+            if (ColumnIsUniform(slotMachine, j))
                 amountWon += WIN_AMOUNT;
         }
+        if (CheckDiagonalUniform(slotMachine, true))
+            amountWon += WIN_AMOUNT;
+        if (CheckDiagonalUniform(slotMachine, false))
+            amountWon += WIN_AMOUNT;
         return amountWon;
     }
 
@@ -88,7 +95,6 @@ class Program
                 if (RowIsUniform(slotMachine, i))
                     amountWon += WIN_AMOUNT;
             }
-
             for (int j = 0; j < slotMachine.GetLength(1); j++)
             {
                 if (ColumnIsUniform(slotMachine, j))
