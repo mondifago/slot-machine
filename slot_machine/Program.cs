@@ -10,7 +10,7 @@ class Program
 {
     const int GRID_ROW_DIM = 3;
     const int GRID_COLUMN_DIM = 3;
-    const int LIST_START_INDEX = 0;
+    const int ZERO_BASED_INDEX = 0;
     const char GRID_ITEM_1 = 'a';
     const char GRID_ITEM_2 = 'b';
     const char GRID_ITEM_3 = 'c';
@@ -24,6 +24,7 @@ class Program
     const int SINGLE_LINE_COST = 10;
     const int DOUBLE_LINE_COST = 20;
     const int ALL_LINE_COST = 50;
+    
 
     static int CheckRowWin(char[,] slotMachine)
     {
@@ -50,9 +51,9 @@ class Program
     static int CheckRowOrDiagonalWin(char[,] slotMachine)
     {
         int amountWon = 0;
-        for (int i = 0; i < slotMachine.GetLength(0); i++)
+       for (int i = 0; i < slotMachine.GetLength(0); i++)
         {
-            if (RowIsUniform(slotMachine, i) || CheckDiagonalUniform(slotMachine, true) || CheckDiagonalUniform(slotMachine, false))
+            if (RowIsUniform(slotMachine,i) || CheckDiagonalUniform(slotMachine, true) || CheckDiagonalUniform(slotMachine, false))
                 amountWon += WIN_AMOUNT;
         }
         return amountWon;
@@ -130,7 +131,7 @@ class Program
 
         static bool RowIsUniform(char[,] slotMachine, int rowIndex)
         {
-            char[] rowElements = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(1))
+            char[] rowElements = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
                                            .Select(j => slotMachine[rowIndex, j])
                                            .ToArray();
             return rowElements.Distinct().Count() == 1;
@@ -138,7 +139,7 @@ class Program
 
         static bool ColumnIsUniform(char[,] slotMachine, int columnIndex)
         {
-            char[] columnElements = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(0))
+            char[] columnElements = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
                                               .Select(i => slotMachine[i, columnIndex])
                                               .ToArray();
             return columnElements.Distinct().Count() == 1;
@@ -146,7 +147,7 @@ class Program
 
         static bool CheckDiagonalUniform(char[,] slotMachine, bool leftDiagonal)
         {
-            char[] diagonalElements = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(0))
+            char[] diagonalElements = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
                                                 .Select(i => leftDiagonal ? slotMachine[i, i] : slotMachine[i, slotMachine.GetLength(1) - 1 - i])
                                                 .ToArray();
             return diagonalElements.Distinct().Count() == 1;
@@ -243,9 +244,69 @@ class Program
             }
         }
 
+    public static int HandleInvalidEntry(int min = CHECK_ROW_MODE, int max = CHECK_ALL_LINE_MODE)
+    {
+        while (true)
+        {
+            
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int cashDepositSelection))
+            {
+                if (cashDepositSelection >= min && cashDepositSelection <= max)
+                {
+                    return cashDepositSelection;
+                }
+                else
+                {
+                    Console.Write($"Error: Please enter a number between {min} and {max}:\t");
+                }
+            }
+            else if (Console.KeyAvailable)
+            {
+                Console.ReadKey(true); 
+                Console.WriteLine("Error: Please enter a valid number:");
+            }
+            else
+            {
+                Console.Write("Error: You must enter a number:\t");
+            }
+        }
+    }
+
+    static void CashOutPrompt()
+    {
+        while (true)
+        {
+            Console.Write("Are you sure you want to CASH OUT?  y/n: ");
+            try
+            {
+                char input = char.ToUpper(Console.ReadKey().KeyChar);
+                if (input == 'Y')
+                {
+                    Environment.Exit(0);
+                }
+                else if (input == 'N')
+                {
+                    break;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Invalid input. Please enter either 'y' or 'n'.");
+                }
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine("\n" + e.Message);
+            }
+            Console.WriteLine("\n");
+        }
+    }
 
     static void Main(string[] args)
     {
+        string startPromptMessage = "Please choose the Mode you want to play and press ENTER:\t";
+        int cashDepositSelection;
         int totalAmountDeposited = 0;
         int totalAmountWon = 0;
         int amountDeposited;
@@ -257,14 +318,19 @@ class Program
         while (true)
         {
             Console.WriteLine("*********************************|Welcome to Slot Machine|*********************************\n");
-            Console.WriteLine($"Option {CHECK_ROW_MODE}: - Pay ${SINGLE_LINE_COST} to play for all rows and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option {CHECK_COLUMN_MODE}: - Pay ${SINGLE_LINE_COST} to play for all columns and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option {CHECK_ROW_AND_DIAGONAL_MODE}: - Pay ${DOUBLE_LINE_COST} to play for all rows and two diagonals and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option {CHECK_COLUMN_AND_DIAGONAL_MODE}: - Pay ${DOUBLE_LINE_COST} to play for all columns and two diagonals and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Option {CHECK_ALL_LINE_MODE}: - Pay ${ALL_LINE_COST} to play for any line and win ${WIN_AMOUNT} for each line that matches, and ${JACKPOT_WIN} Jackpot if all rows and columns matches\n");
+            Console.WriteLine($"Mode {CHECK_ROW_MODE}: - Pay ${SINGLE_LINE_COST} to play for all rows and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {CHECK_COLUMN_MODE}: - Pay ${SINGLE_LINE_COST} to play for all columns and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {CHECK_ROW_AND_DIAGONAL_MODE}: - Pay ${DOUBLE_LINE_COST} to play for all rows and two diagonals and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {CHECK_COLUMN_AND_DIAGONAL_MODE}: - Pay ${DOUBLE_LINE_COST} to play for all columns and two diagonals and win ${WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {CHECK_ALL_LINE_MODE}: - Pay ${ALL_LINE_COST} to play for any line and win ${WIN_AMOUNT} for each line that matches, and ${JACKPOT_WIN} Jackpot if all rows and columns matches\n");
 
-            Console.Write("Please choose the option you want to play and press ENTER:\t");
-            int cashDepositSelection = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
+            do
+            {
+                Console.Write(startPromptMessage);
+                cashDepositSelection = HandleInvalidEntry(CHECK_ROW_MODE, CHECK_ALL_LINE_MODE);
+            } while (cashDepositSelection < CHECK_ROW_MODE || cashDepositSelection > CHECK_ALL_LINE_MODE); 
+
             Console.WriteLine("\n");
 
             if (cashDepositSelection == CHECK_ROW_MODE || cashDepositSelection == CHECK_COLUMN_MODE)
@@ -292,24 +358,33 @@ class Program
                 Console.WriteLine("\n");
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < GRID_ROW_DIM; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < GRID_COLUMN_DIM; j++)
                 {
-                    int randomIndex = rng.Next(LIST_START_INDEX, listOfChars.Count);
+                    int randomIndex = rng.Next(ZERO_BASED_INDEX, listOfChars.Count);
                     slotMachine[i, j] = listOfChars[randomIndex];
-                    //Console.WriteLine($"Element at position ({i},{j}): {slotMachine[i, j]}");
                     Console.Write(slotMachine[i, j] + " ");
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("Press ENTER to see amount won...");
-            Console.WriteLine("\n");
-            Console.ReadKey();
+            while (true) 
+            {
+                Console.WriteLine("Press ENTER to see amount won...");
+                Console.WriteLine(); 
+                if (Console.ReadKey(true).Key == ConsoleKey.Enter) 
+                { 
+                    break; 
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid key pressed. Please press Enter to continue.");
+                }
+            }
 
             if (cashDepositSelection == CHECK_ROW_MODE)
             {
-                bool[] uniformRows = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(0))
+                bool[] uniformRows = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
                                       .Select(i => RowIsUniform(slotMachine, i))
                                       .ToArray();
 
@@ -318,7 +393,7 @@ class Program
 
             if (cashDepositSelection == CHECK_COLUMN_MODE)
             {
-                bool[] uniformColumns = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(1))
+                bool[] uniformColumns = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
                                            .Select(j => ColumnIsUniform(slotMachine, j))
                                            .ToArray();
 
@@ -327,7 +402,7 @@ class Program
 
             if (cashDepositSelection == CHECK_ROW_AND_DIAGONAL_MODE)
             {
-                bool[] uniformRows = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(0))
+                bool[] uniformRows = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
                                       .Select(i => RowIsUniform(slotMachine, i))
                                       .ToArray();
                 bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
@@ -338,7 +413,7 @@ class Program
 
             if (cashDepositSelection == CHECK_COLUMN_AND_DIAGONAL_MODE)
             {
-                bool[] uniformColumns = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(1))
+                bool[] uniformColumns = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
                                            .Select(j => ColumnIsUniform(slotMachine, j))
                                            .ToArray();
                 bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
@@ -349,10 +424,10 @@ class Program
 
             if (cashDepositSelection == CHECK_ALL_LINE_MODE)
             {
-                bool[] uniformRows = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(0))
+                bool[] uniformRows = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
                                       .Select(i => RowIsUniform(slotMachine, i))
                                       .ToArray();
-                bool[] uniformColumns = Enumerable.Range(LIST_START_INDEX, slotMachine.GetLength(1))
+                bool[] uniformColumns = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
                                            .Select(j => ColumnIsUniform(slotMachine, j))
                                            .ToArray();
                 bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
@@ -365,16 +440,16 @@ class Program
             Console.WriteLine("you won $" + amountWon);
             totalAmountWon += amountWon;
             Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
-
             Console.WriteLine("\n");
-            Console.WriteLine("Press any to continue...");
+            Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
             Console.Clear();
             Console.WriteLine("You have spent a total of $" + totalAmountDeposited + "\t and Won a total of $" + totalAmountWon);
             Console.WriteLine("Press Enter to play again or any other key to CASHOUT.");
+            Console.WriteLine("\n");
             if (Console.ReadKey().Key != ConsoleKey.Enter)
             {
-                break;
+                CashOutPrompt();
             }
             Console.WriteLine("\n");
         }
