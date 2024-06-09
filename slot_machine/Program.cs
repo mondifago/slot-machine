@@ -6,24 +6,9 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace slot_machine;
 
-class Program
+public class Program
 {
-    const int GRID_ROW_DIM = 3;
-    const int GRID_COLUMN_DIM = 3;
-    const int ZERO_BASED_INDEX = 0;
-    const char GRID_ITEM_1 = 'a';
-    const char GRID_ITEM_2 = 'b';
-    const char GRID_ITEM_3 = 'c';
-    const int CHECK_ROW_MODE = 1;
-    const int CHECK_COLUMN_MODE = 2;
-    const int CHECK_ROW_AND_DIAGONAL_MODE = 3;
-    const int CHECK_COLUMN_AND_DIAGONAL_MODE = 4;
-    const int CHECK_ALL_LINE_MODE = 5;
-    const int WIN_AMOUNT = 40;
-    const int JACKPOT_WIN = 200;
-    const int SINGLE_LINE_COST = 10;
-    const int DOUBLE_LINE_COST = 20;
-    const int ALL_LINE_COST = 50;
+    
     
     static int CheckRowWin(char[,] slotMachine)
     {
@@ -31,7 +16,7 @@ class Program
         for (int i = 0; i < slotMachine.GetLength(0); i++)
         {
             if (RowIsUniform(slotMachine, i))
-                amountWon += WIN_AMOUNT;
+                amountWon += SmConstants.WIN_AMOUNT;
         }
         return amountWon;
     }
@@ -42,7 +27,7 @@ class Program
         for (int j = 0; j < slotMachine.GetLength(1); j++)
         {
             if (ColumnIsUniform(slotMachine, j))
-                amountWon += WIN_AMOUNT;
+                amountWon += SmConstants.WIN_AMOUNT;
         }
         return amountWon;
     }
@@ -53,12 +38,12 @@ class Program
         for (int i = 0; i < slotMachine.GetLength(0); i++)
         {
             if (RowIsUniform(slotMachine, i))
-                amountWon += WIN_AMOUNT;
+                amountWon += SmConstants.WIN_AMOUNT;
         }
         if (CheckDiagonalUniform(slotMachine, true))
-            amountWon += WIN_AMOUNT;
+            amountWon += SmConstants.WIN_AMOUNT;
         if (CheckDiagonalUniform(slotMachine, false))
-            amountWon += WIN_AMOUNT;
+            amountWon += SmConstants.WIN_AMOUNT;
         return amountWon;
     }
 
@@ -68,12 +53,12 @@ class Program
         for (int j = 0; j < slotMachine.GetLength(1); j++)
         {
             if (ColumnIsUniform(slotMachine, j))
-                amountWon += WIN_AMOUNT;
+                amountWon += SmConstants.WIN_AMOUNT;
         }
         if (CheckDiagonalUniform(slotMachine, true))
-            amountWon += WIN_AMOUNT;
+            amountWon += SmConstants.WIN_AMOUNT;
         if (CheckDiagonalUniform(slotMachine, false))
-            amountWon += WIN_AMOUNT;
+            amountWon += SmConstants.WIN_AMOUNT;
         return amountWon;
     }
 
@@ -84,7 +69,7 @@ class Program
 
         if (uniformRows.All(x => x) && uniformColumns.All(x => x))
         {
-            amountWon = JACKPOT_WIN;
+            amountWon = SmConstants.JACKPOT_WIN;
             jackpotWon = true;
         }
 
@@ -93,17 +78,17 @@ class Program
             for (int i = 0; i < slotMachine.GetLength(0); i++)
             {
                 if (RowIsUniform(slotMachine, i))
-                    amountWon += WIN_AMOUNT;
+                    amountWon += SmConstants.WIN_AMOUNT;
             }
             for (int j = 0; j < slotMachine.GetLength(1); j++)
             {
                 if (ColumnIsUniform(slotMachine, j))
-                    amountWon += WIN_AMOUNT;
+                    amountWon += SmConstants.WIN_AMOUNT;
             }
             if (CheckDiagonalUniform(slotMachine, true))
-                amountWon += WIN_AMOUNT;
+                amountWon += SmConstants.WIN_AMOUNT;
             if (CheckDiagonalUniform(slotMachine, false))
-                amountWon += WIN_AMOUNT;
+                amountWon += SmConstants.WIN_AMOUNT;
         }
 
         return amountWon;
@@ -116,19 +101,19 @@ class Program
         bool[] uniformColumns = new bool[slotMachine.GetLength(1)]; 
         switch (cashDepositSelection)
         {
-            case CHECK_ROW_MODE:
+            case SmConstants.CHECK_ROW_MODE:
                 amountWon = CheckRowWin(slotMachine);
                 break;
-            case CHECK_COLUMN_MODE:
+            case SmConstants.CHECK_COLUMN_MODE:
                 amountWon = CheckColumnWin(slotMachine);
                 break;
-            case CHECK_ROW_AND_DIAGONAL_MODE:
+            case SmConstants.CHECK_ROW_AND_DIAGONAL_MODE:
                 amountWon = CheckRowOrDiagonalWin(slotMachine);
                 break;
-            case CHECK_COLUMN_AND_DIAGONAL_MODE:
+            case SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE:
                 amountWon = CheckColumnOrDiagonalWin(slotMachine);
                 break;
-            case CHECK_ALL_LINE_MODE:
+            case SmConstants.CHECK_ALL_LINE_MODE:
                 amountWon = CheckRowOrColumnDiagonalWin(slotMachine, uniformRows, uniformColumns);
                 break;
         }
@@ -137,7 +122,7 @@ class Program
 
         static bool RowIsUniform(char[,] slotMachine, int rowIndex)
         {
-            char[] rowElements = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
+            char[] rowElements = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => slotMachine[rowIndex, j])
                                            .ToArray();
             return rowElements.Distinct().Count() == 1;
@@ -145,7 +130,7 @@ class Program
 
         static bool ColumnIsUniform(char[,] slotMachine, int columnIndex)
         {
-            char[] columnElements = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
+            char[] columnElements = Enumerable.Range(0, slotMachine.GetLength(0))
                                               .Select(i => slotMachine[i, columnIndex])
                                               .ToArray();
             return columnElements.Distinct().Count() == 1;
@@ -153,7 +138,7 @@ class Program
 
         static bool CheckDiagonalUniform(char[,] slotMachine, bool leftDiagonal)
         {
-            char[] diagonalElements = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
+            char[] diagonalElements = Enumerable.Range(0, slotMachine.GetLength(0))
                                                 .Select(i => leftDiagonal ? slotMachine[i, i] : slotMachine[i, slotMachine.GetLength(1) - 1 - i])
                                                 .ToArray();
             return diagonalElements.Distinct().Count() == 1;
@@ -250,7 +235,7 @@ class Program
             }
         }
 
-    public static int HandleInvalidEntry(int min = CHECK_ROW_MODE, int max = CHECK_ALL_LINE_MODE)
+    public static int HandleInvalidEntry(int min = SmConstants.CHECK_ROW_MODE, int max = SmConstants.CHECK_ALL_LINE_MODE)
     {
         while (true)
         {
@@ -318,57 +303,57 @@ class Program
         int amountDeposited;
 
         Random rng = new Random();
-        List<char> listOfChars = new List<char>() { GRID_ITEM_1, GRID_ITEM_2, GRID_ITEM_3, };
-        char[,] slotMachine = new char[GRID_ROW_DIM, GRID_COLUMN_DIM];
+        List<char> listOfChars = new List<char>() { SmConstants.GRID_ITEM_1, SmConstants.GRID_ITEM_2, SmConstants.GRID_ITEM_3, };
+        char[,] slotMachine = new char[SmConstants.GRID_ROW_DIM, SmConstants.GRID_COLUMN_DIM];
 
         while (true)
         {
             Console.WriteLine("*********************************|Welcome to Slot Machine|*********************************\n");
-            Console.WriteLine($"Mode {CHECK_ROW_MODE}: - Pay ${SINGLE_LINE_COST} to play for all rows and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Mode {CHECK_COLUMN_MODE}: - Pay ${SINGLE_LINE_COST} to play for all columns and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Mode {CHECK_ROW_AND_DIAGONAL_MODE}: - Pay ${DOUBLE_LINE_COST} to play for all rows and two diagonals and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Mode {CHECK_COLUMN_AND_DIAGONAL_MODE}: - Pay ${DOUBLE_LINE_COST} to play for all columns and two diagonals and win ${WIN_AMOUNT} for each line that matches");
-            Console.WriteLine($"Mode {CHECK_ALL_LINE_MODE}: - Pay ${ALL_LINE_COST} to play for any line and win ${WIN_AMOUNT} for each line that matches, and ${JACKPOT_WIN} Jackpot if all rows and columns matches\n");
+            Console.WriteLine($"Mode {SmConstants.CHECK_ROW_MODE}: - Pay ${SmConstants.SINGLE_LINE_COST} to play for all rows and win ${SmConstants.WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {SmConstants.CHECK_COLUMN_MODE}: - Pay ${SmConstants.SINGLE_LINE_COST} to play for all columns and win ${SmConstants.WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {SmConstants.CHECK_ROW_AND_DIAGONAL_MODE}: - Pay ${SmConstants.DOUBLE_LINE_COST} to play for all rows and two diagonals and win ${SmConstants.WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE}: - Pay ${SmConstants.DOUBLE_LINE_COST} to play for all columns and two diagonals and win ${SmConstants.WIN_AMOUNT} for each line that matches");
+            Console.WriteLine($"Mode {SmConstants.CHECK_ALL_LINE_MODE}: - Pay ${SmConstants.ALL_LINE_COST} to play for any line and win ${SmConstants.WIN_AMOUNT} for each line that matches, and ${SmConstants.JACKPOT_WIN} Jackpot if all rows and columns matches\n");
 
             Console.WriteLine();
             do
             {
                 Console.Write(startPromptMessage);
-                cashDepositSelection = HandleInvalidEntry(CHECK_ROW_MODE, CHECK_ALL_LINE_MODE);
-            } while (cashDepositSelection < CHECK_ROW_MODE || cashDepositSelection > CHECK_ALL_LINE_MODE); 
+                cashDepositSelection = HandleInvalidEntry(SmConstants.CHECK_ROW_MODE, SmConstants.CHECK_ALL_LINE_MODE);
+            } while (cashDepositSelection < SmConstants.CHECK_ROW_MODE || cashDepositSelection > SmConstants.CHECK_ALL_LINE_MODE); 
 
             Console.WriteLine("\n");
 
-            if (cashDepositSelection == CHECK_ROW_MODE || cashDepositSelection == CHECK_COLUMN_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_ROW_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_MODE)
             {
-                amountDeposited = SINGLE_LINE_COST;
+                amountDeposited = SmConstants.SINGLE_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
                 totalAmountDeposited += amountDeposited;
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
-            if (cashDepositSelection == CHECK_ROW_AND_DIAGONAL_MODE || cashDepositSelection == CHECK_COLUMN_AND_DIAGONAL_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
             {
-                amountDeposited = DOUBLE_LINE_COST;
+                amountDeposited = SmConstants.DOUBLE_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
                 totalAmountDeposited += amountDeposited;
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
-            if (cashDepositSelection == CHECK_ALL_LINE_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_ALL_LINE_MODE)
             {
-                amountDeposited = ALL_LINE_COST;
+                amountDeposited = SmConstants.ALL_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
                 totalAmountDeposited += amountDeposited;
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
 
-            for (int i = 0; i < GRID_ROW_DIM; i++)
+            for (int i = 0; i < SmConstants.GRID_ROW_DIM; i++)
             {
-                for (int j = 0; j < GRID_COLUMN_DIM; j++)
+                for (int j = 0; j < SmConstants.GRID_COLUMN_DIM; j++)
                 {
-                    int randomIndex = rng.Next(ZERO_BASED_INDEX, listOfChars.Count);
+                    int randomIndex = rng.Next(0, listOfChars.Count);
                     slotMachine[i, j] = listOfChars[randomIndex];
                     Console.Write(slotMachine[i, j] + " ");
                 }
@@ -388,27 +373,27 @@ class Program
                 }
             }
 
-            if (cashDepositSelection == CHECK_ROW_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_ROW_MODE)
             {
-                bool[] uniformRows = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
+                bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => RowIsUniform(slotMachine, i))
                                       .ToArray();
 
                 PrintOptionOneWithHighlighting(slotMachine, uniformRows);
             }
 
-            if (cashDepositSelection == CHECK_COLUMN_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_COLUMN_MODE)
             {
-                bool[] uniformColumns = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
+                bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => ColumnIsUniform(slotMachine, j))
                                            .ToArray();
 
                 PrintOptionTwoWithHighlighting(slotMachine, uniformColumns);
             }
 
-            if (cashDepositSelection == CHECK_ROW_AND_DIAGONAL_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE)
             {
-                bool[] uniformRows = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
+                bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => RowIsUniform(slotMachine, i))
                                       .ToArray();
                 bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
@@ -417,9 +402,9 @@ class Program
                 PrintOptionThreeWithHighlighting(slotMachine, uniformRows, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
-            if (cashDepositSelection == CHECK_COLUMN_AND_DIAGONAL_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
             {
-                bool[] uniformColumns = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
+                bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => ColumnIsUniform(slotMachine, j))
                                            .ToArray();
                 bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
@@ -428,12 +413,12 @@ class Program
                 PrintOptionFourWithHighlighting(slotMachine, uniformColumns, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
-            if (cashDepositSelection == CHECK_ALL_LINE_MODE)
+            if (cashDepositSelection == SmConstants.CHECK_ALL_LINE_MODE)
             {
-                bool[] uniformRows = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(0))
+                bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => RowIsUniform(slotMachine, i))
                                       .ToArray();
-                bool[] uniformColumns = Enumerable.Range(ZERO_BASED_INDEX, slotMachine.GetLength(1))
+                bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => ColumnIsUniform(slotMachine, j))
                                            .ToArray();
                 bool isLeftDiagonalUniform = CheckDiagonalUniform(slotMachine, true);
