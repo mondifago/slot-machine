@@ -282,19 +282,7 @@ public class Program
 
             SmUiMethods.PrintSlotMachineWithRandomEntries(slotMachine, listOfChars);
 
-            while (true) 
-            {
-                Console.WriteLine("Press ENTER to see amount won...");
-                Console.WriteLine(); 
-                if (Console.ReadKey(true).Key == ConsoleKey.Enter) 
-                { 
-                    break; 
-                }
-                else
-                {
-                    Console.WriteLine("\nInvalid key pressed. Please press Enter to continue.");
-                }
-            }
+            SmUiMethods.PromptUserToDisplayAmountWon();
 
             if (cashDepositSelection == SmConstants.CHECK_ROW_MODE)
             {

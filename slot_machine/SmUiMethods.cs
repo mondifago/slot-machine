@@ -101,6 +101,23 @@ namespace slot_machine
                 Console.WriteLine();
             }
         }
+
+        public static void PromptUserToDisplayAmountWon()
+        {
+            while (true)
+            {
+                Console.WriteLine("Press ENTER to see amount won...");
+                Console.WriteLine();
+                if (Console.ReadKey(true).Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid key pressed. Please press Enter to continue.");
+                }
+            }
+        }
     }
 }
 
