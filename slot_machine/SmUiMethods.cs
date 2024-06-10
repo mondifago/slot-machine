@@ -443,6 +443,17 @@ namespace slot_machine
                 Console.WriteLine("\n");
             }
         }
+
+        public static void AddandDisplayTotalAmountDepositedandWon(int amountWon, ref int totalAmountWon)
+        {
+            Console.WriteLine("you won $" + amountWon);
+            totalAmountWon += amountWon;
+            Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+            Console.WriteLine("\n");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            Console.Clear();
+        }
     }
 }
 

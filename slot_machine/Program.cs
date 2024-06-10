@@ -32,18 +32,10 @@ public class Program
 
             int amountWon = SmUiMethods.CalculateAmountWonBasedOnModeSelected(cashDepositSelection, slotMachine);
 
-            Console.WriteLine("you won $" + amountWon);
-            totalAmountWon += amountWon;
-            Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
-            Console.WriteLine("\n");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
-            Console.Clear();
+            SmUiMethods.AddandDisplayTotalAmountDepositedandWon(amountWon, ref totalAmountWon);
 
             SmUiMethods.PromptUserToCashoutOrContinue(totalAmountDeposited, totalAmountWon);
-
         }
     }
-
 }
 
