@@ -235,8 +235,6 @@ public class Program
         }
     }
 
-    
-
     static void CashOutPrompt()
     {
         while (true)
@@ -270,8 +268,7 @@ public class Program
     {
         int totalAmountDeposited = 0;
         int totalAmountWon = 0;
-        int amountDeposited;
-
+        
         Random rng = new Random();
         List<char> listOfChars = new List<char>() { SmConstants.GRID_ITEM_1, SmConstants.GRID_ITEM_2, SmConstants.GRID_ITEM_3, };
         char[,] slotMachine = new char[SmConstants.GRID_ROW_DIM, SmConstants.GRID_COLUMN_DIM];
@@ -280,32 +277,9 @@ public class Program
         {
             SmUiMethods.DisplayWelcomeMessage();
 
-            int cashDepositSelection = SmUiMethods.PromptForGameModeSelection();
+            int cashDepositSelection = SmUiMethods.PromptUserToSelectGameMode();
 
-            if (cashDepositSelection == SmConstants.CHECK_ROW_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_MODE)
-            {
-                amountDeposited = SmConstants.SINGLE_LINE_COST;
-                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
-                totalAmountDeposited += amountDeposited;
-                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
-                Console.WriteLine("\n");
-            }
-            if (cashDepositSelection == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
-            {
-                amountDeposited = SmConstants.DOUBLE_LINE_COST;
-                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
-                totalAmountDeposited += amountDeposited;
-                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
-                Console.WriteLine("\n");
-            }
-            if (cashDepositSelection == SmConstants.CHECK_ALL_LINE_MODE)
-            {
-                amountDeposited = SmConstants.ALL_LINE_COST;
-                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
-                totalAmountDeposited += amountDeposited;
-                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
-                Console.WriteLine("\n");
-            }
+            SmUiMethods.PrintDepositBasedOnModeSelected(cashDepositSelection, ref totalAmountDeposited);
 
             for (int i = 0; i < SmConstants.GRID_ROW_DIM; i++)
             {

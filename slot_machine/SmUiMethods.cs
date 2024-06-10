@@ -15,20 +15,20 @@ namespace slot_machine
             Console.WriteLine();
         }
 
-        public static int PromptForGameModeSelection()
+        public static int PromptUserToSelectGameMode()
         {
             int cashDepositSelection;
             do
             {
                 Console.Write("Please choose the Mode you want to play and press ENTER:\t");
-                cashDepositSelection = HandleInvalidEntry(SmConstants.CHECK_ROW_MODE, SmConstants.CHECK_ALL_LINE_MODE);
+                cashDepositSelection = HandleInvalidEntry();
             } while (cashDepositSelection < SmConstants.CHECK_ROW_MODE || cashDepositSelection > SmConstants.CHECK_ALL_LINE_MODE);
 
             Console.WriteLine("\n");
             return cashDepositSelection;
         }
 
-        public static int HandleInvalidEntry(int min = SmConstants.CHECK_ROW_MODE, int max = SmConstants.CHECK_ALL_LINE_MODE)
+        public static int HandleInvalidEntry()
         {
             while (true)
             {
@@ -37,13 +37,13 @@ namespace slot_machine
 
                 if (int.TryParse(input, out int cashDepositSelection))
                 {
-                    if (cashDepositSelection >= min && cashDepositSelection <= max)
+                    if (cashDepositSelection >= SmConstants.CHECK_ROW_MODE && cashDepositSelection <= SmConstants.CHECK_ALL_LINE_MODE)
                     {
                         return cashDepositSelection;
                     }
                     else
                     {
-                        Console.Write($"Error: Please enter a number between {min} and {max}:\t");
+                        Console.Write($"Error: Please enter a number between {SmConstants.CHECK_ROW_MODE} and {SmConstants.CHECK_ALL_LINE_MODE}:\t");
                     }
                 }
                 else if (Console.KeyAvailable)
@@ -55,6 +55,36 @@ namespace slot_machine
                 {
                     Console.Write("Error: You must enter a number:\t");
                 }
+            }
+        }
+
+        public static void PrintDepositBasedOnModeSelected(int cashDepositSelection, ref int totalAmountDeposited)
+        {
+            int amountDeposited;
+
+            if (cashDepositSelection == SmConstants.CHECK_ROW_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_MODE)
+            {
+                amountDeposited = SmConstants.SINGLE_LINE_COST;
+                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
+                totalAmountDeposited += amountDeposited;
+                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
+                Console.WriteLine("\n");
+            }
+            if (cashDepositSelection == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
+            {
+                amountDeposited = SmConstants.DOUBLE_LINE_COST;
+                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
+                totalAmountDeposited += amountDeposited;
+                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
+                Console.WriteLine("\n");
+            }
+            if (cashDepositSelection == SmConstants.CHECK_ALL_LINE_MODE)
+            {
+                amountDeposited = SmConstants.ALL_LINE_COST;
+                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
+                totalAmountDeposited += amountDeposited;
+                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
+                Console.WriteLine("\n");
             }
         }
     }
