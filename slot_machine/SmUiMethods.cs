@@ -377,7 +377,7 @@ namespace slot_machine
             return amountWon;
         }
 
-        public static int CalculateWinnings(int cashDepositSelection, char[,] slotMachine)
+        public static int CalculateAmountWonBasedOnModeSelected(int cashDepositSelection, char[,] slotMachine)
         {
             int amountWon = 0;
             bool[] uniformRows = new bool[slotMachine.GetLength(0)];
@@ -401,6 +401,47 @@ namespace slot_machine
                     break;
             }
             return amountWon;
+        }
+
+        public static void PromptUserToCashoutOrContinue(int totalAmountDeposited, int totalAmountWon)
+        {
+            Console.WriteLine("You have spent a total of $" + totalAmountDeposited + "\t and Won a total of $" + totalAmountWon);
+            Console.WriteLine("Press Enter to play again or any other key to CASHOUT.");
+            Console.WriteLine("\n");
+            if (Console.ReadKey().Key != ConsoleKey.Enter)
+            {
+                CashOutPrompt();
+            }
+            Console.WriteLine("\n");
+        }
+
+        public static void CashOutPrompt()
+        {
+            while (true)
+            {
+                Console.Write("Are you sure you want to CASH OUT?  y/n: ");
+                try
+                {
+                    char input = char.ToUpper(Console.ReadKey().KeyChar);
+                    if (input == 'Y')
+                    {
+                        Environment.Exit(0);
+                    }
+                    else if (input == 'N')
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Invalid input. Please enter either 'y' or 'n'.");
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine("\n" + e.Message);
+                }
+                Console.WriteLine("\n");
+            }
         }
     }
 }

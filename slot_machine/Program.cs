@@ -8,35 +8,6 @@ namespace slot_machine;
 
 public class Program
 { 
-    static void CashOutPrompt()
-    {
-        while (true)
-        {
-            Console.Write("Are you sure you want to CASH OUT?  y/n: ");
-            try
-            {
-                char input = char.ToUpper(Console.ReadKey().KeyChar);
-                if (input == 'Y')
-                {
-                    Environment.Exit(0);
-                }
-                else if (input == 'N')
-                {
-                    break;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Invalid input. Please enter either 'y' or 'n'.");
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine("\n" + e.Message);
-            }
-            Console.WriteLine("\n");
-        }
-    }
-
     static void Main(string[] args)
     {
         int totalAmountDeposited = 0;
@@ -59,7 +30,7 @@ public class Program
 
             SmUiMethods.PrintGridHighlightingUniformLinesBasedOnModeSelected(cashDepositSelection, slotMachine);
 
-            int amountWon = SmUiMethods.CalculateWinnings(cashDepositSelection, slotMachine);
+            int amountWon = SmUiMethods.CalculateAmountWonBasedOnModeSelected(cashDepositSelection, slotMachine);
 
             Console.WriteLine("you won $" + amountWon);
             totalAmountWon += amountWon;
@@ -68,15 +39,9 @@ public class Program
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
             Console.Clear();
-            Console.WriteLine("You have spent a total of $" + totalAmountDeposited + "\t and Won a total of $" + totalAmountWon);
-            Console.WriteLine("Press Enter to play again or any other key to CASHOUT.");
-            Console.WriteLine("\n");
 
-            if (Console.ReadKey().Key != ConsoleKey.Enter)
-            {
-                CashOutPrompt();
-            }
-            Console.WriteLine("\n");
+            SmUiMethods.PromptUserToCashoutOrContinue(totalAmountDeposited, totalAmountWon);
+
         }
     }
 
