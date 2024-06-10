@@ -3,6 +3,7 @@ namespace slot_machine
 {
 	public static class SmConstants
 	{
+        public static readonly Random RANDOM = new Random();
         public const char GRID_ITEM_1 = 'a';
         public const char GRID_ITEM_2 = 'b';
         public const char GRID_ITEM_3 = 'c';

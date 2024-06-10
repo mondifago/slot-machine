@@ -269,7 +269,6 @@ public class Program
         int totalAmountDeposited = 0;
         int totalAmountWon = 0;
         
-        Random rng = new Random();
         List<char> listOfChars = new List<char>() { SmConstants.GRID_ITEM_1, SmConstants.GRID_ITEM_2, SmConstants.GRID_ITEM_3, };
         char[,] slotMachine = new char[SmConstants.GRID_ROW_DIM, SmConstants.GRID_COLUMN_DIM];
 
@@ -281,16 +280,8 @@ public class Program
 
             SmUiMethods.PrintDepositBasedOnModeSelected(cashDepositSelection, ref totalAmountDeposited);
 
-            for (int i = 0; i < SmConstants.GRID_ROW_DIM; i++)
-            {
-                for (int j = 0; j < SmConstants.GRID_COLUMN_DIM; j++)
-                {
-                    int randomIndex = rng.Next(0, listOfChars.Count);
-                    slotMachine[i, j] = listOfChars[randomIndex];
-                    Console.Write(slotMachine[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
+            SmUiMethods.PrintSlotMachineWithRandomEntries(slotMachine, listOfChars);
+
             while (true) 
             {
                 Console.WriteLine("Press ENTER to see amount won...");

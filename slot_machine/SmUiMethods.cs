@@ -87,6 +87,20 @@ namespace slot_machine
                 Console.WriteLine("\n");
             }
         }
+
+        public static void PrintSlotMachineWithRandomEntries(char[,] slotMachine, List<char> listOfChars)
+        {
+            for (int i = 0; i < SmConstants.GRID_ROW_DIM; i++)
+            {
+                for (int j = 0; j < SmConstants.GRID_COLUMN_DIM; j++)
+                {
+                    int randomIndex = SmConstants.RANDOM.Next(listOfChars.Count);
+                    slotMachine[i, j] = listOfChars[randomIndex];
+                    Console.Write(slotMachine[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
 
