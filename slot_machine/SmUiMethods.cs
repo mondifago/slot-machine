@@ -96,10 +96,7 @@ namespace slot_machine
                 {
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("\nInvalid key pressed. Please press Enter to continue.");
-                }
+                Console.WriteLine("\nInvalid key pressed.");
             }
         }
 
@@ -275,7 +272,7 @@ namespace slot_machine
                     {
                         Environment.Exit(0);
                     }
-                    else if (input == 'N')
+                    if (input == 'N')
                     {
                         break;
                     }
