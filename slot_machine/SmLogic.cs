@@ -111,12 +111,12 @@ namespace slot_machine
             return amountWon;
         }
 
-        public static int CalculateAmountWonBasedOnModeSelected(int cashDepositSelection, char[,] slotMachine)
+        public static int CalculateAmountWonBasedOnModeSelected(int gameModeSelected, char[,] slotMachine)
         {
             int amountWon = 0;
             bool[] uniformRows = new bool[slotMachine.GetLength(0)];
             bool[] uniformColumns = new bool[slotMachine.GetLength(1)];
-            switch (cashDepositSelection)
+            switch (gameModeSelected)
             {
                 case SmConstants.CHECK_ROW_MODE:
                     amountWon = CheckRowWin(slotMachine);

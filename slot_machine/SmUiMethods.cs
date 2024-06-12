@@ -19,52 +19,34 @@ namespace slot_machine
 
         public static int PromptUserToSelectGameMode()
         {
-            int cashDepositSelection;
+            int gameModeSelected;
             do
             {
                 Console.Write("Please choose the Mode you want to play and press ENTER:\t");
-                cashDepositSelection = HandleInvalidEntry();
-            } while (cashDepositSelection < SmConstants.CHECK_ROW_MODE || cashDepositSelection > SmConstants.CHECK_ALL_LINE_MODE);
+                gameModeSelected = HandleInvalidEntry();
+            } while (gameModeSelected < SmConstants.CHECK_ROW_MODE || gameModeSelected > SmConstants.CHECK_ALL_LINE_MODE);
 
             Console.WriteLine("\n");
-            return cashDepositSelection;
+            return gameModeSelected;
         }
 
         public static int HandleInvalidEntry()
         {
             while (true)
             {
-
-                string input = Console.ReadLine();
-
-                if (int.TryParse(input, out int cashDepositSelection))
+                if (int.TryParse(Console.ReadLine(), out int input))
                 {
-                    if (cashDepositSelection >= SmConstants.CHECK_ROW_MODE && cashDepositSelection <= SmConstants.CHECK_ALL_LINE_MODE)
-                    {
-                        return cashDepositSelection;
-                    }
-                    else
-                    {
-                        Console.Write($"Error: Please enter a number between {SmConstants.CHECK_ROW_MODE} and {SmConstants.CHECK_ALL_LINE_MODE}:\t");
-                    }
+                    return input;
                 }
-                else if (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                    Console.WriteLine("Error: Please enter a valid number:");
-                }
-                else
-                {
-                    Console.Write("Error: You must enter a number:\t");
-                }
+                Console.Write($"Error: Please enter a number between {SmConstants.CHECK_ROW_MODE} and {SmConstants.CHECK_ALL_LINE_MODE}:\t");
             }
         }
 
-        public static void PrintDepositBasedOnModeSelected(int cashDepositSelection, ref int totalAmountDeposited)
+        public static void PrintDepositBasedOnModeSelected(int gameModeSelected, ref int totalAmountDeposited)
         {
             int amountDeposited;
 
-            if (cashDepositSelection == SmConstants.CHECK_ROW_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_MODE)
+            if (gameModeSelected == SmConstants.CHECK_ROW_MODE || gameModeSelected == SmConstants.CHECK_COLUMN_MODE)
             {
                 amountDeposited = SmConstants.SINGLE_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
@@ -72,7 +54,7 @@ namespace slot_machine
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
-            if (cashDepositSelection == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE || cashDepositSelection == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
+            if (gameModeSelected == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE || gameModeSelected == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
             {
                 amountDeposited = SmConstants.DOUBLE_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
@@ -80,7 +62,7 @@ namespace slot_machine
                 Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
                 Console.WriteLine("\n");
             }
-            if (cashDepositSelection == SmConstants.CHECK_ALL_LINE_MODE)
+            if (gameModeSelected == SmConstants.CHECK_ALL_LINE_MODE)
             {
                 amountDeposited = SmConstants.ALL_LINE_COST;
                 Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
@@ -121,9 +103,9 @@ namespace slot_machine
             }
         }
 
-        public static void PrintGridHighlightingUniformLinesBasedOnModeSelected(int cashDepositSelection, char[,] slotMachine)
+        public static void PrintGridHighlightingUniformLinesBasedOnModeSelected(int gameModeSelected, char[,] slotMachine)
         {
-            if (cashDepositSelection == SmConstants.CHECK_ROW_MODE)
+            if (gameModeSelected == SmConstants.CHECK_ROW_MODE)
             {
                 bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => SmLogic.RowIsUniform(slotMachine, i))
@@ -132,7 +114,7 @@ namespace slot_machine
                 PrintOptionOneWithHighlighting(slotMachine, uniformRows);
             }
 
-            if (cashDepositSelection == SmConstants.CHECK_COLUMN_MODE)
+            if (gameModeSelected == SmConstants.CHECK_COLUMN_MODE)
             {
                 bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => SmLogic.ColumnIsUniform(slotMachine, j))
@@ -141,7 +123,7 @@ namespace slot_machine
                 PrintOptionTwoWithHighlighting(slotMachine, uniformColumns);
             }
 
-            if (cashDepositSelection == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE)
+            if (gameModeSelected == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE)
             {
                 bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => SmLogic.RowIsUniform(slotMachine, i))
@@ -152,7 +134,7 @@ namespace slot_machine
                 PrintOptionThreeWithHighlighting(slotMachine, uniformRows, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
-            if (cashDepositSelection == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
+            if (gameModeSelected == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
             {
                 bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => SmLogic.ColumnIsUniform(slotMachine, j))
@@ -163,7 +145,7 @@ namespace slot_machine
                 PrintOptionFourWithHighlighting(slotMachine, uniformColumns, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
-            if (cashDepositSelection == SmConstants.CHECK_ALL_LINE_MODE)
+            if (gameModeSelected == SmConstants.CHECK_ALL_LINE_MODE)
             {
                 bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => SmLogic.RowIsUniform(slotMachine, i))

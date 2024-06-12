@@ -20,17 +20,17 @@ public class Program
         {
             SmUiMethods.DisplayWelcomeMessage();
 
-            int cashDepositSelection = SmUiMethods.PromptUserToSelectGameMode();
+            int gameModeSelected = SmUiMethods.PromptUserToSelectGameMode();
 
-            SmUiMethods.PrintDepositBasedOnModeSelected(cashDepositSelection, ref totalAmountDeposited);
+            SmUiMethods.PrintDepositBasedOnModeSelected(gameModeSelected, ref totalAmountDeposited);
 
             SmUiMethods.PrintSlotMachineWithRandomEntries(slotMachine, listOfChars);
 
             SmUiMethods.PromptUserToDisplayAmountWon();
 
-            SmUiMethods.PrintGridHighlightingUniformLinesBasedOnModeSelected(cashDepositSelection, slotMachine);
+            SmUiMethods.PrintGridHighlightingUniformLinesBasedOnModeSelected(gameModeSelected, slotMachine);
 
-            int amountWon = SmLogic.CalculateAmountWonBasedOnModeSelected(cashDepositSelection, slotMachine);
+            int amountWon = SmLogic.CalculateAmountWonBasedOnModeSelected(gameModeSelected, slotMachine);
 
             SmUiMethods.AddandDisplayTotalAmountDepositedandWon(amountWon, ref totalAmountWon);
 
