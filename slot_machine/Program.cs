@@ -30,7 +30,7 @@ public class Program
 
             SmUiMethods.PrintGridHighlightingUniformLinesBasedOnModeSelected(cashDepositSelection, slotMachine);
 
-            int amountWon = SmUiMethods.CalculateAmountWonBasedOnModeSelected(cashDepositSelection, slotMachine);
+            int amountWon = SmLogic.CalculateAmountWonBasedOnModeSelected(cashDepositSelection, slotMachine);
 
             SmUiMethods.AddandDisplayTotalAmountDepositedandWon(amountWon, ref totalAmountWon);
 
