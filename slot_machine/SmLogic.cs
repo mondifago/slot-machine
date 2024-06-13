@@ -136,6 +136,19 @@ namespace slot_machine
             }
             return amountWon;
         }
+
+        public static string GetModeDescription(GameMode modeDescription)
+        {
+            return modeDescription switch
+            {
+                GameMode.CHECK_ROW_MODE => "Pay $10 to play for all rows and win $40 for each line that matches",
+                GameMode.CHECK_COLUMN_MODE => "Pay $10 to play for all columns and win $40 for each line that matches",
+                GameMode.CHECK_ROW_AND_DIAGONAL_MODE => "Pay $20 to play for all rows and two diagonals and win $40 for each line that matches",
+                GameMode.CHECK_COLUMN_AND_DIAGONAL_MODE => "Pay $20 to play for all columns and two diagonals and win $40 for each line that matches",
+                GameMode.CHECK_ALL_LINE_MODE => "Pay $50 to play for any line and win $40 for each line that matches, and $200 Jackpot if all rows and columns match",
+                _ => throw new ArgumentOutOfRangeException(nameof(modeDescription), modeDescription, null)
+            };
+        }
     }
 }
 
