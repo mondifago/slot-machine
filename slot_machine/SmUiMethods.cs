@@ -22,7 +22,7 @@ namespace slot_machine
             {
                 Console.Write("Please choose the Mode you want to play and press ENTER:\t");
                 gameModeSelected = HandleInvalidEntry();
-            } while (gameModeSelected < SmConstants.CHECK_ROW_MODE || gameModeSelected > SmConstants.CHECK_ALL_LINE_MODE);
+            } while (gameModeSelected < (int)GameMode.mode1|| gameModeSelected > (int)GameMode.mode5);
 
             Console.WriteLine("\n");
             return gameModeSelected;
@@ -36,7 +36,7 @@ namespace slot_machine
                 {
                     return input;
                 }
-                Console.Write($"Error: Please enter a number between {SmConstants.CHECK_ROW_MODE} and {SmConstants.CHECK_ALL_LINE_MODE}:\t");
+                Console.Write($"Error: Please enter a number between {(int)GameMode.mode1} and {(int)GameMode.mode5}:\t");
             }
         }
 
@@ -78,7 +78,7 @@ namespace slot_machine
 
         public static void PrintGridHighlightingUniformLinesBasedOnModeSelected(int gameModeSelected, char[,] slotMachine)
         {
-            if (gameModeSelected == SmConstants.CHECK_ROW_MODE)
+            if (gameModeSelected == (int)GameMode.mode1)
             {
                 bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => SmLogic.RowIsUniform(slotMachine, i))
@@ -87,7 +87,7 @@ namespace slot_machine
                 PrintOptionOneWithHighlighting(slotMachine, uniformRows);
             }
 
-            if (gameModeSelected == SmConstants.CHECK_COLUMN_MODE)
+            if (gameModeSelected == (int)GameMode.mode2)
             {
                 bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => SmLogic.ColumnIsUniform(slotMachine, j))
@@ -96,7 +96,7 @@ namespace slot_machine
                 PrintOptionTwoWithHighlighting(slotMachine, uniformColumns);
             }
 
-            if (gameModeSelected == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE)
+            if (gameModeSelected == (int)GameMode.mode3)
             {
                 bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => SmLogic.RowIsUniform(slotMachine, i))
@@ -107,7 +107,7 @@ namespace slot_machine
                 PrintOptionThreeWithHighlighting(slotMachine, uniformRows, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
-            if (gameModeSelected == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
+            if (gameModeSelected == (int)GameMode.mode4)
             {
                 bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                                            .Select(j => SmLogic.ColumnIsUniform(slotMachine, j))
@@ -118,7 +118,7 @@ namespace slot_machine
                 PrintOptionFourWithHighlighting(slotMachine, uniformColumns, isLeftDiagonalUniform, isRightDiagonalUniform);
             }
 
-            if (gameModeSelected == SmConstants.CHECK_ALL_LINE_MODE)
+            if (gameModeSelected == (int)GameMode.mode5)
             {
                 bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
                                       .Select(i => SmLogic.RowIsUniform(slotMachine, i))

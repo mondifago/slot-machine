@@ -117,15 +117,15 @@ namespace slot_machine
             bool[] uniformColumns = new bool[slotMachine.GetLength(1)];
             switch ((GameMode)gameModeSelected)
             {
-                case GameMode.CHECK_ROW_MODE:
+                case GameMode.mode1:
                     return CheckRowWin(slotMachine);
-                case GameMode.CHECK_COLUMN_MODE:
+                case GameMode.mode2:
                     return CheckColumnWin(slotMachine);
-                case GameMode.CHECK_ROW_AND_DIAGONAL_MODE:
+                case GameMode.mode3:
                     return CheckRowOrDiagonalWin(slotMachine);
-                case GameMode.CHECK_COLUMN_AND_DIAGONAL_MODE:
+                case GameMode.mode4:
                     return CheckColumnOrDiagonalWin(slotMachine);
-                case GameMode.CHECK_ALL_LINE_MODE:
+                case GameMode.mode5:
                     return CheckRowOrColumnDiagonalWin(slotMachine, uniformRows, uniformColumns);
                 default:
                     return 0;
@@ -136,11 +136,11 @@ namespace slot_machine
         {
             return modeDescription switch
             {
-                GameMode.CHECK_ROW_MODE => "Pay $10 to play for all rows and win $40 for each line that matches",
-                GameMode.CHECK_COLUMN_MODE => "Pay $10 to play for all columns and win $40 for each line that matches",
-                GameMode.CHECK_ROW_AND_DIAGONAL_MODE => "Pay $20 to play for all rows and two diagonals and win $40 for each line that matches",
-                GameMode.CHECK_COLUMN_AND_DIAGONAL_MODE => "Pay $20 to play for all columns and two diagonals and win $40 for each line that matches",
-                GameMode.CHECK_ALL_LINE_MODE => "Pay $50 to play for any line and win $40 for each line that matches, and $200 Jackpot if all rows and columns match",
+                GameMode.mode1 => "Pay $10 to play for all rows and win $40 for each line that matches",
+                GameMode.mode2 => "Pay $10 to play for all columns and win $40 for each line that matches",
+                GameMode.mode3 => "Pay $20 to play for all rows and two diagonals and win $40 for each line that matches",
+                GameMode.mode4 => "Pay $20 to play for all columns and two diagonals and win $40 for each line that matches",
+                GameMode.mode5 => "Pay $50 to play for any line and win $40 for each line that matches, and $200 Jackpot if all rows and columns match",
                 _ => throw new ArgumentOutOfRangeException(nameof(modeDescription), modeDescription, null)
             };
         }
@@ -149,11 +149,11 @@ namespace slot_machine
         {
             return gameModeCost switch
             {
-                GameMode.CHECK_ROW_MODE => SmConstants.SINGLE_LINE_COST,
-                GameMode.CHECK_COLUMN_MODE => SmConstants.SINGLE_LINE_COST,
-                GameMode.CHECK_ROW_AND_DIAGONAL_MODE => SmConstants.DOUBLE_LINE_COST,
-                GameMode.CHECK_COLUMN_AND_DIAGONAL_MODE => SmConstants.DOUBLE_LINE_COST,
-                GameMode.CHECK_ALL_LINE_MODE => SmConstants.ALL_LINE_COST,
+                GameMode.mode1 => SmConstants.SINGLE_LINE_COST,
+                GameMode.mode2 => SmConstants.SINGLE_LINE_COST,
+                GameMode.mode3 => SmConstants.DOUBLE_LINE_COST,
+                GameMode.mode4 => SmConstants.DOUBLE_LINE_COST,
+                GameMode.mode5 => SmConstants.ALL_LINE_COST,
                 _ => 0
             };
         }
