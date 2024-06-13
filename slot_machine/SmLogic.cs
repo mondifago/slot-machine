@@ -149,6 +149,19 @@ namespace slot_machine
                 _ => throw new ArgumentOutOfRangeException(nameof(modeDescription), modeDescription, null)
             };
         }
+
+        public static int GetDepositAmount(GameMode gameModeSelected)
+        {
+            return gameModeSelected switch
+            {
+                GameMode.CHECK_ROW_MODE => SmConstants.SINGLE_LINE_COST,
+                GameMode.CHECK_COLUMN_MODE => SmConstants.SINGLE_LINE_COST,
+                GameMode.CHECK_ROW_AND_DIAGONAL_MODE => SmConstants.DOUBLE_LINE_COST,
+                GameMode.CHECK_COLUMN_AND_DIAGONAL_MODE => SmConstants.DOUBLE_LINE_COST,
+                GameMode.CHECK_ALL_LINE_MODE => SmConstants.ALL_LINE_COST,
+                _ => 0
+            };
+        }
     }
 }
 

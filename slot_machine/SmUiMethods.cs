@@ -42,32 +42,10 @@ namespace slot_machine
 
         public static void PrintDepositBasedOnModeSelected(int gameModeSelected, ref int totalAmountDeposited)
         {
-            int amountDeposited;
-
-            if (gameModeSelected == SmConstants.CHECK_ROW_MODE || gameModeSelected == SmConstants.CHECK_COLUMN_MODE)
-            {
-                amountDeposited = SmConstants.SINGLE_LINE_COST;
-                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
-                totalAmountDeposited += amountDeposited;
-                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
-                Console.WriteLine("\n");
-            }
-            if (gameModeSelected == SmConstants.CHECK_ROW_AND_DIAGONAL_MODE || gameModeSelected == SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE)
-            {
-                amountDeposited = SmConstants.DOUBLE_LINE_COST;
-                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
-                totalAmountDeposited += amountDeposited;
-                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
-                Console.WriteLine("\n");
-            }
-            if (gameModeSelected == SmConstants.CHECK_ALL_LINE_MODE)
-            {
-                amountDeposited = SmConstants.ALL_LINE_COST;
-                Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
-                totalAmountDeposited += amountDeposited;
-                Console.WriteLine("Total Amount deposited = $" + totalAmountDeposited);
-                Console.WriteLine("\n");
-            }
+            int amountDeposited = SmLogic.GetDepositAmount((GameMode)gameModeSelected);
+            totalAmountDeposited += amountDeposited;
+            Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
+            Console.WriteLine($"Total Amount deposited = ${totalAmountDeposited}\n");
         }
 
         public static void PrintSlotMachineWithRandomEntries(char[,] slotMachine, List<char> listOfChars)
