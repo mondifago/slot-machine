@@ -56,7 +56,7 @@ namespace slot_machine
                 {
                     int randomIndex = rng.Next(listOfChars.Count);
                     slotMachine[i, j] = listOfChars[randomIndex];
-                    Console.Write(slotMachine[i, j] + " ");
+                    Console.Write(slotMachine[i, j] + SmConstants.EMPTY_SPACE);
                 }
                 Console.WriteLine();
             }
@@ -144,7 +144,7 @@ namespace slot_machine
                         Console.ForegroundColor = ConsoleColor.Green;
 
                     }
-                    Console.Write(slotMachine[i, j] + " ");
+                    Console.Write(slotMachine[i, j] + SmConstants.EMPTY_SPACE);
                     Console.ResetColor();
                 }
                 Console.WriteLine();
@@ -161,7 +161,7 @@ namespace slot_machine
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
-                    Console.Write(slotMachine[i, j] + " ");
+                    Console.Write(slotMachine[i, j] + SmConstants.EMPTY_SPACE);
                     Console.ResetColor();
                 }
                 Console.WriteLine();
@@ -179,7 +179,7 @@ namespace slot_machine
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
-                    Console.Write(slotMachine[i, j] + " ");
+                    Console.Write(slotMachine[i, j] + SmConstants.EMPTY_SPACE);
                     Console.ResetColor();
                 }
                 Console.WriteLine();
@@ -197,7 +197,7 @@ namespace slot_machine
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
-                    Console.Write(slotMachine[i, j] + " ");
+                    Console.Write(slotMachine[i, j] + SmConstants.EMPTY_SPACE);
                     Console.ResetColor();
                 }
                 Console.WriteLine();
@@ -217,7 +217,7 @@ namespace slot_machine
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
-                    Console.Write(slotMachine[i, j] + " ");
+                    Console.Write(slotMachine[i, j] + SmConstants.EMPTY_SPACE);
                     Console.ResetColor();
                 }
                 Console.WriteLine();
