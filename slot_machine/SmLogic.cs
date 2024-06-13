@@ -113,28 +113,23 @@ namespace slot_machine
 
         public static int CalculateAmountWonBasedOnModeSelected(int gameModeSelected, char[,] slotMachine)
         {
-            int amountWon = 0;
             bool[] uniformRows = new bool[slotMachine.GetLength(0)];
             bool[] uniformColumns = new bool[slotMachine.GetLength(1)];
-            switch (gameModeSelected)
+            switch ((GameMode)gameModeSelected)
             {
-                case SmConstants.CHECK_ROW_MODE:
-                    amountWon = CheckRowWin(slotMachine);
-                    break;
-                case SmConstants.CHECK_COLUMN_MODE:
-                    amountWon = CheckColumnWin(slotMachine);
-                    break;
-                case SmConstants.CHECK_ROW_AND_DIAGONAL_MODE:
-                    amountWon = CheckRowOrDiagonalWin(slotMachine);
-                    break;
-                case SmConstants.CHECK_COLUMN_AND_DIAGONAL_MODE:
-                    amountWon = CheckColumnOrDiagonalWin(slotMachine);
-                    break;
-                case SmConstants.CHECK_ALL_LINE_MODE:
-                    amountWon = CheckRowOrColumnDiagonalWin(slotMachine, uniformRows, uniformColumns);
-                    break;
+                case GameMode.CHECK_ROW_MODE:
+                    return CheckRowWin(slotMachine);
+                case GameMode.CHECK_COLUMN_MODE:
+                    return CheckColumnWin(slotMachine);
+                case GameMode.CHECK_ROW_AND_DIAGONAL_MODE:
+                    return CheckRowOrDiagonalWin(slotMachine);
+                case GameMode.CHECK_COLUMN_AND_DIAGONAL_MODE:
+                    return CheckColumnOrDiagonalWin(slotMachine);
+                case GameMode.CHECK_ALL_LINE_MODE:
+                    return CheckRowOrColumnDiagonalWin(slotMachine, uniformRows, uniformColumns);
+                default:
+                    return 0;
             }
-            return amountWon;
         }
 
         public static string GetModeDescription(GameMode modeDescription)
@@ -150,9 +145,9 @@ namespace slot_machine
             };
         }
 
-        public static int GetDepositAmount(GameMode gameModeSelected)
+        public static int GetDepositAmount(GameMode gameModeCost)
         {
-            return gameModeSelected switch
+            return gameModeCost switch
             {
                 GameMode.CHECK_ROW_MODE => SmConstants.SINGLE_LINE_COST,
                 GameMode.CHECK_COLUMN_MODE => SmConstants.SINGLE_LINE_COST,
