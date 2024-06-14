@@ -16,7 +16,8 @@ public class Program
         List<char> listOfChars = new List<char>() { SmConstants.GRID_ITEM_1, SmConstants.GRID_ITEM_2, SmConstants.GRID_ITEM_3, };
         char[,] slotMachine = new char[SmConstants.GRID_ROW_DIM, SmConstants.GRID_COLUMN_DIM];
 
-        while (true)
+        bool continuePlaying = true;
+        while (continuePlaying)
         {
             SmUiMethods.DisplayWelcomeMessage();
 
@@ -34,7 +35,7 @@ public class Program
 
             SmUiMethods.AddandDisplayTotalAmountDepositedandWon(amountWon, ref totalAmountWon);
 
-            SmUiMethods.PromptUserToCashoutOrContinue(totalAmountDeposited, totalAmountWon);
+            continuePlaying = SmUiMethods.PromptUserToCashoutOrContinue(totalAmountDeposited, totalAmountWon);
         }
     }
 }

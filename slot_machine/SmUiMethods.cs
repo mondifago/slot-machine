@@ -224,37 +224,38 @@ namespace slot_machine
             }
         }
 
-        public static void PromptUserToCashoutOrContinue(int totalAmountDeposited, int totalAmountWon)
+        public static bool PromptUserToCashoutOrContinue(int totalAmountDeposited, int totalAmountWon)
         {
             Console.WriteLine("You have spent a total of $" + totalAmountDeposited + "\t and Won a total of $" + totalAmountWon);
             Console.WriteLine("Press Enter to play again or any other key to CASHOUT.");
             Console.WriteLine("\n");
             if (Console.ReadKey().Key != ConsoleKey.Enter)
             {
-                CashOutPrompt();
+                return !CashOutPrompt();
             }
             Console.WriteLine("\n");
+            return true;
         }
 
-        public static void CashOutPrompt()
+        public static bool CashOutPrompt()
         {
             while (true)
             {
-                Console.Write("Are you sure you want to CASH OUT?  y/n: ");
+                Console.WriteLine("Are you sure you want to CASH OUT?  y/n: ");
                 try
                 {
                     char input = char.ToUpper(Console.ReadKey().KeyChar);
-                    if (input == 'Y')
+                    if (input == SmConstants.YES)
                     {
-                        Environment.Exit(0);
+                        return true; 
                     }
-                    if (input == 'N')
+                    if (input == SmConstants.NO)
                     {
-                        break;
+                        return false; 
                     }
                     else
                     {
-                        throw new InvalidOperationException("Invalid input. Please enter either 'y' or 'n'.");
+                        throw new InvalidOperationException($"Invalid input. Please enter either {SmConstants.YES} or {SmConstants.NO}.");
                     }
                 }
                 catch (InvalidOperationException e)

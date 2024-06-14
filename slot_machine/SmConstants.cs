@@ -6,6 +6,8 @@ namespace slot_machine
         public const char GRID_ITEM_1 = 'a';
         public const char GRID_ITEM_2 = 'b';
         public const char GRID_ITEM_3 = 'c';
+        public const char YES = 'Y';
+        public const char NO = 'N';
         public const string EMPTY_SPACE = " ";
         public const int GRID_ROW_DIM = 3;
         public const int GRID_COLUMN_DIM = 3;
