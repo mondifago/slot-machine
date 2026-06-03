@@ -124,8 +124,8 @@
                     return CheckColumnOrDiagonalWin(slotMachine);
                 case GameMode.mode5:
                     bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
-                    .Select(i => RowIsUniform(slotMachine, i))
-                    .ToArray();
+                        .Select(i => RowIsUniform(slotMachine, i))
+                        .ToArray();
                     bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
                         .Select(j => ColumnIsUniform(slotMachine, j))
                         .ToArray();

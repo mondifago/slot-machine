@@ -1,8 +1,7 @@
-﻿using System;
-namespace slot_machine
+﻿namespace slot_machine
 {
-	public static class SmConstants
-	{
+    public static class SmConstants
+    {
         public const char GRID_ITEM_1 = 'a';
         public const char GRID_ITEM_2 = 'b';
         public const char GRID_ITEM_3 = 'c';
@@ -16,6 +15,7 @@ namespace slot_machine
         public const int SINGLE_LINE_COST = 10;
         public const int DOUBLE_LINE_COST = 20;
         public const int ALL_LINE_COST = 50;
+        public const int STARTING_BALANCE = 50;
     }
 }
 
