@@ -264,6 +264,14 @@
             Console.Write(playerBalance);
             Console.ResetColor();
             Console.WriteLine();
+
+            if (playerBalance == 0)
+            {
+                Console.WriteLine("\nGame Over! You have run out of money. Press ENTER to exit.");
+                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                return false;
+            }
+
             Console.WriteLine("Press Enter to play again or any other key to CASHOUT.");
             Console.WriteLine("\n");
             if (Console.ReadKey().Key != ConsoleKey.Enter)
