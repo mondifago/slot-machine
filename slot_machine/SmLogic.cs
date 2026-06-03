@@ -1,8 +1,7 @@
-﻿using System;
-namespace slot_machine
+﻿namespace slot_machine
 {
-	public static class SmLogic
-	{
+    public static class SmLogic
+    {
         public static bool RowIsUniform(char[,] slotMachine, int rowIndex)
         {
             char[] rowElements = Enumerable.Range(0, slotMachine.GetLength(1))
@@ -113,8 +112,6 @@ namespace slot_machine
 
         public static int CalculateAmountWonBasedOnModeSelected(int gameModeSelected, char[,] slotMachine)
         {
-            bool[] uniformRows = new bool[slotMachine.GetLength(0)];
-            bool[] uniformColumns = new bool[slotMachine.GetLength(1)];
             switch ((GameMode)gameModeSelected)
             {
                 case GameMode.mode1:
@@ -126,6 +123,12 @@ namespace slot_machine
                 case GameMode.mode4:
                     return CheckColumnOrDiagonalWin(slotMachine);
                 case GameMode.mode5:
+                    bool[] uniformRows = Enumerable.Range(0, slotMachine.GetLength(0))
+                    .Select(i => RowIsUniform(slotMachine, i))
+                    .ToArray();
+                    bool[] uniformColumns = Enumerable.Range(0, slotMachine.GetLength(1))
+                        .Select(j => ColumnIsUniform(slotMachine, j))
+                        .ToArray();
                     return CheckRowOrColumnDiagonalWin(slotMachine, uniformRows, uniformColumns);
                 default:
                     return 0;
