@@ -6,18 +6,24 @@ public class Program
     {
         int totalAmountDeposited = 0;
         int totalAmountWon = 0;
+        int playerBalance = SmConstants.STARTING_BALANCE;
 
-        List<char> listOfChars = new List<char>() { SmConstants.GRID_ITEM_1, SmConstants.GRID_ITEM_2, SmConstants.GRID_ITEM_3, };
+        List<char> listOfChars = new List<char>()
+        { SmConstants.GRID_ITEM_1,
+          SmConstants.GRID_ITEM_2,
+          SmConstants.GRID_ITEM_3,
+        };
+
         char[,] slotMachine = new char[SmConstants.GRID_ROW_DIM, SmConstants.GRID_COLUMN_DIM];
 
         bool continuePlaying = true;
         while (continuePlaying)
         {
-            SmUiMethods.DisplayWelcomeMessage();
+            SmUiMethods.DisplayWelcomeMessage(playerBalance);
 
             int gameModeSelected = SmUiMethods.PromptUserToSelectGameMode();
 
-            SmUiMethods.PrintDepositBasedOnModeSelected(gameModeSelected, ref totalAmountDeposited);
+            SmUiMethods.PrintDepositBasedOnModeSelected(gameModeSelected, ref totalAmountDeposited, ref playerBalance);
 
             SmUiMethods.PrintSlotMachineWithRandomEntries(slotMachine, listOfChars);
 
@@ -27,9 +33,9 @@ public class Program
 
             int amountWon = SmLogic.CalculateAmountWonBasedOnModeSelected(gameModeSelected, slotMachine);
 
-            SmUiMethods.AddandDisplayTotalAmountDepositedandWon(amountWon, ref totalAmountWon);
+            SmUiMethods.AddandDisplayTotalAmountDepositedandWon(amountWon, ref totalAmountWon, ref playerBalance);
 
-            continuePlaying = SmUiMethods.PromptUserToCashoutOrContinue(totalAmountDeposited, totalAmountWon);
+            continuePlaying = SmUiMethods.PromptUserToCashoutOrContinue(totalAmountDeposited, totalAmountWon, playerBalance);
         }
     }
 }

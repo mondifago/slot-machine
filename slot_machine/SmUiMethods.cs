@@ -1,11 +1,10 @@
-﻿using System;
-namespace slot_machine
+﻿namespace slot_machine
 {
-	public static class SmUiMethods
-	{
+    public static class SmUiMethods
+    {
         public static readonly Random rng = new Random();
 
-        public static void DisplayWelcomeMessage()
+        public static void DisplayWelcomeMessage(int playerBalance)
         {
             Console.WriteLine("*********************************|Welcome to Slot Machine|*********************************\n");
             foreach (var modeDescription in Enum.GetValues(typeof(GameMode)))
@@ -13,6 +12,11 @@ namespace slot_machine
                 Console.WriteLine($"Mode {(int)modeDescription}: {SmLogic.GetModeDescription((GameMode)modeDescription)}");
             }
             Console.WriteLine();
+            Console.Write("You have been allocated $");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(playerBalance);
+            Console.ResetColor();
+            Console.Write(", ");
         }
 
         public static int PromptUserToSelectGameMode()
@@ -22,7 +26,7 @@ namespace slot_machine
             {
                 Console.Write("Please choose the Mode you want to play and press ENTER:\t");
                 gameModeSelected = HandleInvalidEntry();
-            } while (gameModeSelected < (int)GameMode.mode1|| gameModeSelected > (int)GameMode.mode5);
+            } while (gameModeSelected < (int)GameMode.mode1 || gameModeSelected > (int)GameMode.mode5);
 
             Console.WriteLine("\n");
             return gameModeSelected;
@@ -40,12 +44,18 @@ namespace slot_machine
             }
         }
 
-        public static void PrintDepositBasedOnModeSelected(int gameModeSelected, ref int totalAmountDeposited)
+        public static void PrintDepositBasedOnModeSelected(int gameModeSelected, ref int totalAmountDeposited, ref int playerBalance)
         {
             int amountDeposited = SmLogic.GetDepositAmount((GameMode)gameModeSelected);
             totalAmountDeposited += amountDeposited;
-            Console.WriteLine($"\nAmount deposited = ${amountDeposited}\n");
-            Console.WriteLine($"Total Amount deposited = ${totalAmountDeposited}\n");
+            playerBalance -= amountDeposited;
+            Console.WriteLine($"\nAmount deposited = ${amountDeposited}");
+            Console.WriteLine($"Total Amount deposited = ${totalAmountDeposited}");
+            Console.Write("Total Balance = $");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(playerBalance);
+            Console.ResetColor();
+            Console.WriteLine("\n");
         }
 
         public static void PrintSlotMachineWithRandomEntries(char[,] slotMachine, List<char> listOfChars)
@@ -224,9 +234,14 @@ namespace slot_machine
             }
         }
 
-        public static bool PromptUserToCashoutOrContinue(int totalAmountDeposited, int totalAmountWon)
+        public static bool PromptUserToCashoutOrContinue(int totalAmountDeposited, int totalAmountWon, int playerBalance)
         {
             Console.WriteLine("You have spent a total of $" + totalAmountDeposited + "\t and Won a total of $" + totalAmountWon);
+            Console.Write("Current Balance = $");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(playerBalance);
+            Console.ResetColor();
+            Console.WriteLine();
             Console.WriteLine("Press Enter to play again or any other key to CASHOUT.");
             Console.WriteLine("\n");
             if (Console.ReadKey().Key != ConsoleKey.Enter)
@@ -247,11 +262,11 @@ namespace slot_machine
                     char input = char.ToUpper(Console.ReadKey().KeyChar);
                     if (input == SmConstants.YES)
                     {
-                        return true; 
+                        return true;
                     }
                     if (input == SmConstants.NO)
                     {
-                        return false; 
+                        return false;
                     }
                     else
                     {
@@ -266,11 +281,16 @@ namespace slot_machine
             }
         }
 
-        public static void AddandDisplayTotalAmountDepositedandWon(int amountWon, ref int totalAmountWon)
+        public static void AddandDisplayTotalAmountDepositedandWon(int amountWon, ref int totalAmountWon, ref int playerBalance)
         {
-            Console.WriteLine("you won $" + amountWon);
+            playerBalance += amountWon;
             totalAmountWon += amountWon;
+            Console.WriteLine("You won $" + amountWon);
             Console.WriteLine("Total Amount won so far = $" + totalAmountWon);
+            Console.Write("Current Balance = $");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(playerBalance);
+            Console.ResetColor();
             Console.WriteLine("\n");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
