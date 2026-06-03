@@ -19,13 +19,35 @@
             Console.Write(", ");
         }
 
-        public static int PromptUserToSelectGameMode()
+        public static int PromptUserToSelectGameMode(int playerBalance)
         {
             int gameModeSelected;
             do
             {
                 Console.Write("Please choose the Mode you want to play and press ENTER:\t");
                 gameModeSelected = HandleInvalidEntry();
+
+                if (gameModeSelected >= (int)GameMode.mode1 && gameModeSelected <= (int)GameMode.mode5)
+                {
+                    int modeCost = SmLogic.GetDepositAmount((GameMode)gameModeSelected);
+                    if (playerBalance < modeCost)
+                    {
+                        Console.Write($"\nNot enough balance. Mode {gameModeSelected} costs ${modeCost} but your balance is $");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(playerBalance);
+                        Console.ResetColor();
+                        Console.WriteLine(".");
+                        Console.WriteLine("Press ENTER to return to main menu or any other key to CASHOUT.");
+                        if (Console.ReadKey(true).Key != ConsoleKey.Enter)
+                        {
+                            gameModeSelected = -1;
+                            return gameModeSelected;
+                        }
+                        Console.WriteLine("\n");
+                        gameModeSelected = 0;
+                    }
+                }
+
             } while (gameModeSelected < (int)GameMode.mode1 || gameModeSelected > (int)GameMode.mode5);
 
             Console.WriteLine("\n");

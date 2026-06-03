@@ -21,7 +21,13 @@ public class Program
         {
             SmUiMethods.DisplayWelcomeMessage(playerBalance);
 
-            int gameModeSelected = SmUiMethods.PromptUserToSelectGameMode();
+            int gameModeSelected = SmUiMethods.PromptUserToSelectGameMode(playerBalance);
+
+            if (gameModeSelected == -1)
+            {
+                SmUiMethods.CashOutPrompt();
+                break;
+            }
 
             SmUiMethods.PrintDepositBasedOnModeSelected(gameModeSelected, ref totalAmountDeposited, ref playerBalance);
 
