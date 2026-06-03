@@ -25,7 +25,7 @@ public class Program
 
             if (gameModeSelected == -1)
             {
-                SmUiMethods.CashOutPrompt();
+                SmUiMethods.CashOutPrompt(playerBalance);
                 break;
             }
 

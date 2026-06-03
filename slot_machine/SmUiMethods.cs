@@ -276,13 +276,13 @@
             Console.WriteLine("\n");
             if (Console.ReadKey().Key != ConsoleKey.Enter)
             {
-                return !CashOutPrompt();
+                return !CashOutPrompt(playerBalance);
             }
             Console.WriteLine("\n");
             return true;
         }
 
-        public static bool CashOutPrompt()
+        public static bool CashOutPrompt(int playerBalance)
         {
             while (true)
             {
@@ -292,6 +292,13 @@
                     char input = char.ToUpper(Console.ReadKey().KeyChar);
                     if (input == SmConstants.YES)
                     {
+                        Console.Write("\nYou have successfully cashed out $");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(playerBalance);
+                        Console.ResetColor();
+                        Console.WriteLine("!");
+                        Console.WriteLine("Press any key to exit.");
+                        Console.ReadKey();
                         return true;
                     }
                     if (input == SmConstants.NO)
